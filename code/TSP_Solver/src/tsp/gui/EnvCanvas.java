@@ -19,19 +19,25 @@ import tsp.util.Node;
 @SuppressWarnings("serial")
 public class EnvCanvas extends Canvas
 {    
+	// Class constants
+	private final static Color PNT_COLOR = Color.black;
+    private final static Color NTW_COLOR = new Color(70, 130, 180);
+	private final static int SCR_MARGIN = 25;
+	private final static int PNT_DIAMETER = 4;
+    
     // Class variables
+    private DoublePoint[] doublePoint;
+    private DoubleLinkedList graph;
+    
+    // Plot variables
     private Graphics g;
-    public int V;
     private int x;
     private int y;
     private int w;
     private int h;
-    private DoublePoint[] doublePoint;
-    private DoubleLinkedList graph;
-    private Color color1;
-    private Color color2;
-    public int marginV;
-    public int marginH;
+    public int pFactor;
+    public int vMargin;
+    public int hMargin;
     
     // Creates a new instance of EnvCanvas
     public EnvCanvas(int x, int y, int w, int h)
@@ -41,13 +47,11 @@ public class EnvCanvas extends Canvas
         this.w = w;
         this.h = h;
         setBounds(x, y, w, h);
-        color1 = Color.black;
-        color2 = Color.red;
         doublePoint = null;
         graph = null;
-        V = h-50;
-        marginV = 25;
-        marginH = (w - h) / 2;
+        pFactor = h - 2 * SCR_MARGIN;
+        vMargin = SCR_MARGIN;
+        hMargin = (w - pFactor) / 2;
     }
     
     public void paint(Graphics g)
@@ -58,26 +62,41 @@ public class EnvCanvas extends Canvas
     
     public synchronized void paintCanvas()
     {
+    	int xv = 0, yv = 0;
+    	int xn = 0, yn = 0;
+    	
         g.setColor(Color.white);
         g.fillRect(x, y, w, h);
         
+        // Plot problem points
         if (doublePoint != null)
         {
-            g.setColor(color1);
-            for(int i=0; i<doublePoint.length; i++)
-                g.fillOval(marginH + (int)(doublePoint[i].x * V)-1, marginV + (int)(doublePoint[i].y * V)-1, 3, 3);
+            g.setColor(PNT_COLOR);
+            for (int i = 0; i < doublePoint.length; i++) {
+            	xv = (int)(doublePoint[i].x * pFactor);
+            	yv = (int)((1 - doublePoint[i].y) * pFactor);
+                g.fillOval((hMargin + xv - 1), (vMargin + yv - 1), 2, 2);
+            }
         }
+
+        // Plot solution
         if (graph != null)
         {
-            g.setColor(color2);
+            g.setColor(NTW_COLOR);
             Node node = graph.getLastNode();
             do
             {
-                g.fillOval(marginH+(int)(node.x * V)-1, marginV + (int)(node.y * V)-1, 3, 3);
-                g.drawLine(marginH+(int)(node.x * V), marginV + (int)(node.y * V), marginH + (int)(node.next.x * V), marginV + (int)(node.next.y * V));
+            	xv = (int)(node.x * pFactor);
+            	yv = (int)((1 - node.y) * pFactor);
+            	xn = (int)(node.next.x * pFactor);
+            	yn = (int)((1 - node.next.y) * pFactor);
+                g.fillOval((hMargin + xv - PNT_DIAMETER / 2), (vMargin + yv - PNT_DIAMETER / 2), PNT_DIAMETER, PNT_DIAMETER);
+                g.drawLine((hMargin + xv), (vMargin + yv), hMargin + xn, vMargin + yn);
                 node = node.next;
-            } while (node != graph.getLastNode());
+            }
+            while (node != graph.getLastNode());
         }
+        
     }
     
     // re-paint graph
@@ -87,4 +106,5 @@ public class EnvCanvas extends Canvas
         this.graph = graph;
         repaint();
     }
+    
 }

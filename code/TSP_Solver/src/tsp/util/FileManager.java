@@ -33,7 +33,7 @@ public class FileManager
         doublePoint = null;
         fileName = "";
         maxValue = 0.0d;
-        jfc = new JFileChooser();
+        jfc = new JFileChooser("C:/Users/Andres/Documents/GitHub/TSP/data/");
         br = null;
     }
 
@@ -45,46 +45,39 @@ public class FileManager
     		return;
     	}
     	
-    	double max = 0;
-    	double minX = 0;
-    	double minY = 0;
+    	double vMin = Double.MAX_VALUE;
+    	double vMax = Double.MIN_VALUE;
+    	double vRange = 1;
     	
-    	// En este ciclo busco el minimo valor en X y en Y
-    	for(int i=0; i < points.length; i++)
+    	// Find the minimum values of X and Y
+    	for (int i = 0; i < points.length; i++)
     	{
-    		if(points[i].x < minX)
-    			minX = points[i].x;
-    		if(points[i].y < minY)
-    			minY = points[i].y;
+    		if (points[i].x < vMin)
+    			vMin = points[i].x;
+    		if (points[i].y < vMin)
+    			vMin = points[i].y;
+    		
+    		if (points[i].x > vMax)
+    			vMax = points[i].x;
+    		if (points[i].y > vMax)
+    			vMax = points[i].y;
     	}
     	
-    	// En este ciclo paso todos los doublePoint a positivos
-    	if(minX < 0)
-    		for(int i=0; i<points.length; i++)
-    			points[i].x -= minX;
-    	if(minY < 0)
-    		for(int i=0; i<points.length; i++)
-    			points[i].y -= minY;
+    	vRange = vMax - vMin;
+    	maxValue = vMax;
+    	System.out.println("   Limits - vMin:" + vMin + ", vMax: " + vMax + ", yMin: " + ", vRange: " + vRange + ", Max value: " + maxValue);
     	
-    	// Paso todos los valores a un intervalo entre 0 y 1
-    	for(int i=0; i<points.length; i++)
+    	// Scaling X and Y values [0, 1]
+    	for (int i = 0; i < points.length; i++)
     	{
-    		if(points[i].x > max)
-    			max = points[i].x;
-    		if(points[i].y > max)
-    			max = points[i].y;
+    		points[i].x = (points[i].x - vMin) / vRange;
+    		points[i].y = (points[i].y - vMin) / vRange;
     	}
     	
-    	for(int i=0; i < points.length; i++)
-    	{
-    		points[i].x /= max;
-    		points[i].y /= max;
-    	}
-    	maxValue = max;
     }
     
     // Method that reads the input data from a TSPLIB file
-    public DoublePoint[] loadFile()
+    public DoublePoint[] loadFile(boolean scaleData)
     {
         doublePoint = null;
         maxValue = 0.0d;
@@ -95,7 +88,7 @@ public class FileManager
     			return null;
     		
             String path = jfc.getSelectedFile().toString();
-            System.out.println(">> Read file from: " + path);
+            System.out.println("   Read file from: " + path);
             
 		    try
 		    {
@@ -138,8 +131,10 @@ public class FileManager
 				System.out.println("   End cycle");
 				
 				// Scaling data points
-				scaleData(doublePoint);
-				System.out.println("   Data scaled successfully");
+				if (scaleData) {
+					scaleData(doublePoint);
+					System.out.println("   Data scaled successfully");
+				}
 		    }
 		    catch(IOException ex)
 		    {

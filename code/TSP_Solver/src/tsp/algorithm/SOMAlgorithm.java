@@ -1,5 +1,5 @@
 /*
- * AlgoritmoMAK.java
+ * SOMAlgorithm.java
  *
  * Created on 10 de junio de 2007, 03:11 PM
  * Created by Andres Segura
@@ -30,7 +30,7 @@ public class SOMAlgorithm extends Thread
     private boolean display;
     private long t;
     
-    /** Creates a new instance of AlgoritmoMAK */
+    /** Creates a new instance of SOMAlgorithm */
     public SOMAlgorithm(Environment env)
     {
         this.env = env;

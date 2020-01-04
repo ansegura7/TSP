@@ -19,31 +19,33 @@ import tsp.util.FileManager;
 
 @SuppressWarnings("serial")
 public class Environment extends javax.swing.JFrame
-{   
-    // Main Class variables
-    public EnvCanvas envCanvas;
-    private FileManager fm;
-    private DoublePoint[] doublePoint;
-    private Dimension screenSize;
-    private int w;
-    private int h;
-    
-    // Algorithms
-    private SOMAlgorithm algoSOM;
-    
+{
     // GUI objects
-    private javax.swing.JPanel jPanel1;
+	private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JComboBox<String> jCombo1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JCheckBox jCheckBox1;
+    public EnvCanvas envCanvas;
+    
+    // Main Class variables
+    private FileManager fm;
+    private DoublePoint[] doublePoint;
+    private Dimension screenSize;
+    private int w;
+    private int h;
     private DecimalFormat f;
+    
+    // Algorithms
+    private SOMAlgorithm algoSOM;
     
     // Creates new form Environment
     public Environment()
@@ -69,145 +71,155 @@ public class Environment extends javax.swing.JFrame
     private void initComponents()
     {
     	getContentPane().setBackground(Color.white);
-        jPanel1 = new javax.swing.JPanel();
+    	jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        jCombo1 = new javax.swing.JComboBox<String>();
         jLabel1 = new javax.swing.JLabel("File name:");
         jLabel2 = new javax.swing.JLabel("Elapsed time:");
         jLabel3 = new javax.swing.JLabel("TSP tour length:");
         jLabel4 = new javax.swing.JLabel("Number of points:");
         jLabel5 = new javax.swing.JLabel("Animation:");
+        jLabel6 = new javax.swing.JLabel("Load TSP file");
         jCheckBox1 = new javax.swing.JCheckBox();
-		
-        envCanvas = new EnvCanvas(0, 0, w-220, h-50);
-        add(envCanvas);
-
-		jPanel1.setBounds(w-220, 0, 210, 310);
-		jPanel1.setBackground(Color.white);
-		jPanel1.setLayout(null);	
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "ACTIONS", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11),new java.awt.Color(0, 70, 213)));
+        
+        // Initialize panel2
+     	jPanel1.setBounds(6, 0, w-227, h-35);
+     	jPanel1.setBackground(Color.white);
+     	jPanel1.setLayout(null);	
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "TSP", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11),new java.awt.Color(0, 70, 213)));
         add(jPanel1);
         
+        // Initialize panel2
+		jPanel2.setBounds(w-220, 0, 208, 280);
+		jPanel2.setBackground(Color.white);
+		jPanel2.setLayout(null);	
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "ACTIONS", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11),new java.awt.Color(0, 70, 213)));
+        add(jPanel2);
+        
+        // Initialize canvas
+        envCanvas = new EnvCanvas(3, 11, w-236, h-51);
+        jPanel1.add(envCanvas);
+        
         // Initialize boton1
-        jPanel1.add(jButton1);
-        jButton1.setBounds(20, 40, 120, 20);
+        jPanel2.add(jButton1);
+        jButton1.setBounds(100, 40, 70, 20);
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jButton1.setForeground(new java.awt.Color(0, 70, 213));
-        jButton1.setText("Load");
-        jButton1.setToolTipText("Cargar el archivo inicial");
+        jButton1.setText("Seach");
+        jButton1.setToolTipText("Load TSP file.");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
         
-		// Initialize boton2
-		jPanel1.add(jButton2);
-		jButton2.setBounds(20, 70, 120, 20);
+		// Initialize boton3
+		jPanel2.add(jButton2);
+		jButton2.setBounds(20, 100, 70, 20);
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 11));
         jButton2.setForeground(new java.awt.Color(0, 70, 213));
-        jButton2.setText("Launch MAK");
-        jButton2.setToolTipText("Lanzar red neuronal inicial");
+        jButton2.setText("Solve");
+        jButton2.setToolTipText("Solve TSP problem");
+        jButton2.setEnabled(false);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
         
-		// Initialize boton3
-		jPanel1.add(jButton3);
-		jButton3.setBounds(20, 100, 120, 20);
+        // Initialize boton4
+		jPanel2.add(jButton3);
+		jButton3.setBounds(100, 100, 70, 20);
         jButton3.setFont(new java.awt.Font("Tahoma", 1, 11));
         jButton3.setForeground(new java.awt.Color(0, 70, 213));
-        jButton3.setText("Start");
-        jButton3.setToolTipText("Resolver el TSP");
+        jButton3.setText("Stop");
+        jButton3.setToolTipText("Stop execution.");
+        jButton3.setEnabled(false);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
         
-        // Initialize boton4
-		jPanel1.add(jButton4);
-		jButton4.setBounds(20, 130, 120, 20);
-        jButton4.setFont(new java.awt.Font("Tahoma", 1, 11));
-        jButton4.setForeground(new java.awt.Color(0, 70, 213));
-        jButton4.setText("Stop");
-        jButton4.setToolTipText("Parar la ejecucion del algoritmo");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
+		// Initialize combo1
+		jPanel2.add(jCombo1);
+		jCombo1.setBounds(20, 70, 150, 20);
+		jCombo1.setFont(new java.awt.Font("Tahoma", 1, 11));
+		jCombo1.setForeground(new java.awt.Color(0, 70, 213));
+		jCombo1.addItem("SOM Algorithm");
+		jCombo1.setToolTipText("Select algorithm.");
         
         // Initialize label1
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(20, 175, 200, 20);
+        jPanel2.add(jLabel1);
+        jLabel1.setBounds(20, 140, 200, 20);
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel1.setForeground(new java.awt.Color(0, 70, 213));
         
         // Initialize label2
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(20, 200, 200, 20);
+        jPanel2.add(jLabel2);
+        jLabel2.setBounds(20, 165, 200, 20);
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel2.setForeground(new java.awt.Color(0, 70, 213));
         
         // Initialize label3
-        jPanel1.add(jLabel3);
-        jLabel3.setBounds(20, 225, 200, 20);
+        jPanel2.add(jLabel3);
+        jLabel3.setBounds(20, 190, 200, 20);
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel3.setForeground(new java.awt.Color(0, 70, 213));
         
         // Initialize label4
-        jPanel1.add(jLabel4);
-        jLabel4.setBounds(20, 250, 200, 20);
+        jPanel2.add(jLabel4);
+        jLabel4.setBounds(20, 215, 200, 20);
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel4.setForeground(new java.awt.Color(0, 70, 213));
         
         // Initialize label5
-        jPanel1.add(jLabel5);
-        jLabel5.setBounds(20, 275, 100, 20);
+        jPanel2.add(jLabel5);
+        jLabel5.setBounds(20, 240, 100, 20);
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel5.setForeground(new java.awt.Color(0, 70, 213));
         
+        // Initialize label6
+        jPanel2.add(jLabel6);
+        jLabel6.setBounds(20, 40, 100, 20);
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel6.setForeground(new java.awt.Color(0, 70, 213));
+        
         // Initialize checkBox1
-        jPanel1.add(jCheckBox1);
-        jCheckBox1.setBounds(90, 275, 40, 20);
+        jPanel2.add(jCheckBox1);
+        jCheckBox1.setBounds(90, 240, 40, 20);
         jCheckBox1.setBackground(Color.white);
     }              
     
     // Event - Load TSP data file
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
     	
-        doublePoint = fm.loadFile();
-        if (doublePoint != null) {
+    	DoublePoint[] dp = fm.loadFile(true);
+    	
+        if (dp != null) {
+        	this.doublePoint = dp;
+        	
         	envCanvas.paintGraph(doublePoint, null);
-        	System.out.println("   Ploted " + doublePoint.length + " points");
-        }
-        
-        jLabel1.setText("File name: " + fm.getFileName());
-        jLabel2.setText("Elapsed time: ");
-        jLabel3.setText("TSP tour length: ");
-        jLabel4.setText("Number of points: " + doublePoint.length);
-    }
-    
-    // Event - Launch initial tour
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        
-    	if (doublePoint != null)
-        {
-    		algoSOM = new SOMAlgorithm(this);
-    		algoSOM.showInitialSOM(doublePoint);
+        	jButton2.setEnabled(true);
+        	jButton3.setEnabled(true);
+            jLabel1.setText("File name: " + fm.getFileName());
+            jLabel2.setText("Elapsed time: ");
+            jLabel3.setText("TSP tour length: ");
+            jLabel4.setText("Number of points: " + doublePoint.length);
+            System.out.println("   Ploted " + doublePoint.length + " points");
         }
     }
     
     // Event - Method to solve the TSP
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
     	
         if (doublePoint != null)
         {
+        	algoSOM = new SOMAlgorithm(this);
+    		algoSOM.showInitialSOM(doublePoint);
         	algoSOM.initAlgorithm(jCheckBox1.isSelected());
             jLabel2.setText("Elapsed time: ");
             jLabel3.setText("TSP tour length: ");
@@ -216,7 +228,7 @@ public class Environment extends javax.swing.JFrame
     
     // Event - Stop algorithm execution
     @SuppressWarnings("deprecation")
-	private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+	private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {                                         
     	
         if (doublePoint != null)
         	algoSOM.stop();
