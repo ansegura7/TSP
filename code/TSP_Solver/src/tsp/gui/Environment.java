@@ -105,7 +105,7 @@ public class Environment extends javax.swing.JFrame
         
         // Initialize boton1
         jPanel2.add(jButton1);
-        jButton1.setBounds(100, 40, 70, 20);
+        jButton1.setBounds(105, 40, 75, 20);
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jButton1.setForeground(new java.awt.Color(0, 70, 213));
         jButton1.setText("Seach");
@@ -118,7 +118,7 @@ public class Environment extends javax.swing.JFrame
         
 		// Initialize boton3
 		jPanel2.add(jButton2);
-		jButton2.setBounds(20, 100, 70, 20);
+		jButton2.setBounds(20, 100, 75, 20);
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 11));
         jButton2.setForeground(new java.awt.Color(0, 70, 213));
         jButton2.setText("Solve");
@@ -132,7 +132,7 @@ public class Environment extends javax.swing.JFrame
         
         // Initialize boton4
 		jPanel2.add(jButton3);
-		jButton3.setBounds(100, 100, 70, 20);
+		jButton3.setBounds(105, 100, 75, 20);
         jButton3.setFont(new java.awt.Font("Tahoma", 1, 11));
         jButton3.setForeground(new java.awt.Color(0, 70, 213));
         jButton3.setText("Stop");
@@ -146,7 +146,7 @@ public class Environment extends javax.swing.JFrame
         
 		// Initialize combo1
 		jPanel2.add(jCombo1);
-		jCombo1.setBounds(20, 70, 150, 20);
+		jCombo1.setBounds(20, 70, 160, 20);
 		jCombo1.setFont(new java.awt.Font("Tahoma", 1, 11));
 		jCombo1.setForeground(new java.awt.Color(0, 70, 213));
 		jCombo1.addItem("SOM Algorithm");
@@ -197,7 +197,7 @@ public class Environment extends javax.swing.JFrame
     // Event - Load TSP data file
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
     	
-    	DoublePoint[] dp = fm.loadFile(true);
+    	DoublePoint[] dp = fm.loadFile();
     	
         if (dp != null) {
         	this.doublePoint = dp;
@@ -238,6 +238,6 @@ public class Environment extends javax.swing.JFrame
     public void display(long elpTime, double tourLength)
     {
         jLabel2.setText("Elapsed time: " + elpTime + " ms");
-        jLabel3.setText("TSP tour length: " + f.format(tourLength * fm.getMaxValue()) + " units");
+        jLabel3.setText("TSP tour length: " + f.format(tourLength * fm.getFactorValue()) + " units");
     }
 }

@@ -23,16 +23,16 @@ public class FileManager
     // Class variables
     private DoublePoint[] doublePoint;
     private String fileName;
-    private double maxValue;
     private JFileChooser jfc;
     private BufferedReader br;
+    private double factorValue;
     
     /** Creates a new instance of FileManager */
     public FileManager()
     {
         doublePoint = null;
         fileName = "";
-        maxValue = 0.0d;
+        factorValue = 1.0d;
         jfc = new JFileChooser("C:/Users/Andres/Documents/GitHub/TSP/data/");
         br = null;
     }
@@ -41,7 +41,7 @@ public class FileManager
     private void scaleData(DoublePoint[] points)
     {
     	if (points == null) {
-    		maxValue = 0.0d;
+    		factorValue = 1.0d;
     		return;
     	}
     	
@@ -64,8 +64,8 @@ public class FileManager
     	}
     	
     	vRange = vMax - vMin;
-    	maxValue = vMax;
-    	System.out.println("   Limits - vMin:" + vMin + ", vMax: " + vMax + ", yMin: " + ", vRange: " + vRange + ", Max value: " + maxValue);
+    	factorValue = vRange;
+    	System.out.println("   Limits - vMin:" + vMin + ", vMax: " + vMax + ", yMin: " + ", factorValue: " + factorValue);
     	
     	// Scaling X and Y values [0, 1]
     	for (int i = 0; i < points.length; i++)
@@ -77,10 +77,10 @@ public class FileManager
     }
     
     // Method that reads the input data from a TSPLIB file
-    public DoublePoint[] loadFile(boolean scaleData)
+    public DoublePoint[] loadFile()
     {
         doublePoint = null;
-        maxValue = 0.0d;
+        factorValue = 1.0d;
     	
     	if (jfc.showDialog(null, "File selector") == 0)
         {
@@ -131,10 +131,8 @@ public class FileManager
 				System.out.println("   End cycle");
 				
 				// Scaling data points
-				if (scaleData) {
-					scaleData(doublePoint);
-					System.out.println("   Data scaled successfully");
-				}
+				scaleData(doublePoint);
+				System.out.println("   Data scaled successfully");
 		    }
 		    catch(IOException ex)
 		    {
@@ -158,8 +156,8 @@ public class FileManager
     }
     
     // Returns the max value of data
-    public double getMaxValue()
+    public double getFactorValue()
     {
-    	return this.maxValue;
+    	return this.factorValue;
     }
 }
