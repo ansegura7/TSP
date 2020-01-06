@@ -20,6 +20,6 @@ public class Main {
     public static void main(String[] args) {
         // Launch the GUI
         new tsp.gui.Environment().setVisible(true);
-        System.out.println(">> Start TSP Solver");
     }
+    
 }

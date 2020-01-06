@@ -1,7 +1,7 @@
 /*
  * SOMAlgorithm.java
  *
- * Created on 10 de junio de 2007, 03:11 PM
+ * Created on June 10, 2007, 03:11 PM
  * Created by Andres Segura
  *
  */
@@ -15,7 +15,7 @@ import tsp.util.DoublePoint;
 import tsp.util.Node;
 
 // Self organizing map (SOM) class
-public class SOMAlgorithm extends Thread
+public class SOMAlgorithm extends TspAlgorithm
 {
     // Class constants
     private final static int MAX_ITERATIONS = 1000;
@@ -28,35 +28,40 @@ public class SOMAlgorithm extends Thread
     private int[] cache;
     private int msSleep = 50;
     private boolean display;
-    private long t;
+    private long elapsedTime;
     
     /** Creates a new instance of SOMAlgorithm */
-    public SOMAlgorithm(Environment env)
+    public SOMAlgorithm()
+    {
+        this(null, false);
+    }
+    
+    /** Creates a new instance of SOMAlgorithm */
+    public SOMAlgorithm(Environment env, boolean b)
     {
         this.env = env;
+        this.display = b;
         this.doublePoint = null;
         this.graph = null;
         this.cache = null;
     }
     
-    // Starts the algorithm and receives a variable to indicate if the animation is shown
-    public void initAlgorithm(boolean b)
+    // Function based on the initial cloud of points established by the initial SOM
+    public void init(DoublePoint[] points)
     {
-    	display = b;
-        start();
-    }
-    
-    // Abstract run method that solves the algorithm
-    public void run()
-    {
-    	solve();
+        this.doublePoint = points;
+        setInitialPoints();
+        if (display)
+        	paint();
+        cache = new int[points.length];
+        java.util.Arrays.fill(cache, -1);
     }
     
     // This is the method that solves the TSP problem using SOM algorithm
     public void solve()
     {
-        t = System.nanoTime();
         if (doublePoint != null) {
+        	elapsedTime = System.nanoTime();
         	
         	while (graph.getNumNodes() < doublePoint.length * 3 / 2)
             {
@@ -68,19 +73,35 @@ public class SOMAlgorithm extends Thread
                 	paint();
             }
         	finish();
+        	elapsedTime = ((System.nanoTime() - elapsedTime) / 1000000);
+        	
+        	// Show final results
             paint();
+            if (env != null)
+            	env.displayResults();
         }
-        env.display(((System.nanoTime() - t) / 1000000), tourLength());
     }
     
-    // Function based on the initial cloud of points established by the initial SOM
-    public void showInitialSOM(DoublePoint[] points)
+    // Method that calculates the length of the tour
+    public double getTourLength()
     {
-        this.doublePoint = points;
-        setInitialPoints();
-        paint();
-        cache = new int[points.length];
-        java.util.Arrays.fill(cache, -1);
+    	double tour = 0.0d;
+    	Node node = graph.getLastNode();
+    	
+    	do
+    	{
+    		tour += Math.sqrt( Math.pow(node.x - node.next.x, 2) + Math.pow(node.y - node.next.y, 2) );
+            node = node.next;
+    	}
+    	while (node != graph.getLastNode());
+    	
+    	return tour;
+    }
+    
+    // Returns the time it took for the algorithm to resolve the TSP
+    public long getElapsedTime()
+    {
+    	return this.elapsedTime;
     }
     
     // Method that looks for the initial position of the SOM
@@ -124,8 +145,10 @@ public class SOMAlgorithm extends Thread
     // Method in charge of drawing. Use a separate thread to make the drawings
     private void paint()
     {
-        new PaintProcess(env.envCanvas, doublePoint, graph);
-        try{ sleep(msSleep); } catch(Exception e){}
+    	if (env != null) {
+	        new PaintProcess(env.envCanvas, doublePoint, graph);
+	        try{ sleep(msSleep); } catch(Exception e) { System.out.println("   Error: " + e.getMessage()); }
+    	}
     }
     
     // Method that update the SOM
@@ -284,19 +307,4 @@ public class SOMAlgorithm extends Thread
         node.next.y += 0.4 * LAMBDA * (doublePoint[pos].y - node.next.y);
     }
     
-    // Method that calculates the length of the tour
-    public double tourLength()
-    {
-    	double tour = 0.0d;
-    	Node node = graph.getLastNode();
-    	
-    	do
-    	{
-    		tour += Math.sqrt( Math.pow(node.x - node.next.x, 2) + Math.pow(node.y - node.next.y, 2) );
-            node = node.next;
-    	}
-    	while (node != graph.getLastNode());
-    	
-    	return tour;
-    }
 }

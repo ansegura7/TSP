@@ -13,6 +13,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.text.DecimalFormat;
 
+import tsp.algorithm.TspAlgorithm;
 import tsp.algorithm.SOMAlgorithm;
 import tsp.util.DoublePoint;
 import tsp.util.FileManager;
@@ -45,7 +46,7 @@ public class Environment extends javax.swing.JFrame
     private DecimalFormat f;
     
     // Algorithms
-    private SOMAlgorithm algoSOM;
+    private TspAlgorithm tspAlgo;
     
     // Creates new form Environment
     public Environment()
@@ -63,7 +64,7 @@ public class Environment extends javax.swing.JFrame
         // Initialize class variables
         fm = new FileManager();
         doublePoint = null;
-        algoSOM = null;
+        tspAlgo = null;
         f = new DecimalFormat("##.00");
     }
     
@@ -197,6 +198,7 @@ public class Environment extends javax.swing.JFrame
     // Event - Load TSP data file
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
     	
+    	System.out.println(">> Start TSP Solver");
     	DoublePoint[] dp = fm.loadFile();
     	
         if (dp != null) {
@@ -208,7 +210,7 @@ public class Environment extends javax.swing.JFrame
             jLabel1.setText("File name: " + fm.getFileName());
             jLabel2.setText("Elapsed time: ");
             jLabel3.setText("TSP tour length: ");
-            jLabel4.setText("Number of points: " + doublePoint.length);
+            jLabel4.setText("Number of points: ");
             System.out.println("   Ploted " + doublePoint.length + " points");
         }
     }
@@ -218,11 +220,17 @@ public class Environment extends javax.swing.JFrame
     	
         if (doublePoint != null)
         {
-        	algoSOM = new SOMAlgorithm(this);
-    		algoSOM.showInitialSOM(doublePoint);
-        	algoSOM.initAlgorithm(jCheckBox1.isSelected());
+        	if (jCombo1.getSelectedIndex() == 0) {
+        		tspAlgo = new SOMAlgorithm(this, jCheckBox1.isSelected());
+        	}
             jLabel2.setText("Elapsed time: ");
             jLabel3.setText("TSP tour length: ");
+            jLabel4.setText("Number of points: ");
+            
+        	// Set data and start algorithm
+        	tspAlgo.init(doublePoint);
+    		tspAlgo.start();
+    		
         }
     }
     
@@ -231,13 +239,18 @@ public class Environment extends javax.swing.JFrame
 	private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {                                         
     	
         if (doublePoint != null)
-        	algoSOM.stop();
+        	tspAlgo.stop();
     }
     
     // Show the final results of the minimum tour
-    public void display(long elpTime, double tourLength)
+    public void displayResults()
     {
-        jLabel2.setText("Elapsed time: " + elpTime + " ms");
-        jLabel3.setText("TSP tour length: " + f.format(tourLength * fm.getFactorValue()) + " units");
+    	long elapsedTime = tspAlgo.getElapsedTime();
+    	double tourLength = tspAlgo.getTourLength() * fm.getFactorValue();
+    	
+        jLabel2.setText("Elapsed time: " + elapsedTime + " ms");
+        jLabel3.setText("TSP tour length: " + f.format(tourLength) + " units");
+        jLabel4.setText("Number of points: " + doublePoint.length);
+        System.out.println("   Algorithm results: Tour length: " + tourLength + " units, Elapsed time: " + tspAlgo.getElapsedTime() + " ms");
     }
 }

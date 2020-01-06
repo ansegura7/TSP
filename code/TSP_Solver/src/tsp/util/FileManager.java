@@ -79,28 +79,39 @@ public class FileManager
     // Method that reads the input data from a TSPLIB file
     public DoublePoint[] loadFile()
     {
+    	return this.loadFile("");
+    }
+    
+    // Method that reads the input data from a TSPLIB file
+    public DoublePoint[] loadFile(String filepath)
+    {
         doublePoint = null;
         factorValue = 1.0d;
+        
+        // If there is no file, then select it
+        if (filepath.equals("")) {
+        	if (jfc.showDialog(null, "File Selector") == 0) {
+        		if(jfc.getSelectedFile().exists()) {
+        			filepath = jfc.getSelectedFile().toString();
+                    System.out.println("   Read file from: " + filepath);	
+        		}
+            }
+        }
     	
-    	if (jfc.showDialog(null, "File selector") == 0)
-        {
-    		if(!jfc.getSelectedFile().exists())
-    			return null;
-    		
-            String path = jfc.getSelectedFile().toString();
-            System.out.println("   Read file from: " + path);
-            
-		    try
-		    {
-		    	br = new BufferedReader( new FileReader(path));
+	    try
+	    {
+	    	// If there are a selected file...
+	    	if (!filepath.equals(""))
+	    	{
+		    	br = new BufferedReader( new FileReader(filepath));
 				String line = br.readLine();
 				String[] tokens = null;
 				int nPoints = 0;
 				double x = 0;
 		    	double y = 0;
 		    	int ix = 0;
-
-		    	System.out.println("   Start cycle");
+	
+		    	System.out.println("   Start reading file");
 				for (int i = 0; i < MAX_POINTS && !line.equals("EOF"); i++)
 				{
 					tokens = line.split(":");
@@ -115,7 +126,7 @@ public class FileManager
 					}
 					else if (tokens[0].toString().startsWith("NODE_COORD_SECTION") && nPoints > 0) {
 						doublePoint = new DoublePoint[nPoints];
-						System.out.println("   Init Double Point List");
+						System.out.println("   Init Double Point list");
 					}
 					else if (doublePoint != null) {
 						tokens = line.split("\\s+");
@@ -128,17 +139,16 @@ public class FileManager
 					line = br.readLine().trim();
 				}
 				br.close();
-				System.out.println("   End cycle");
 				
 				// Scaling data points
 				scaleData(doublePoint);
 				System.out.println("   Data scaled successfully");
-		    }
-		    catch(IOException ex)
-		    {
-		    	System.err.println(">> Load File Error:" + ex.getMessage());
-		    }
-        }
+	    	}
+	    }
+	    catch(IOException ex)
+	    {
+	    	System.err.println(">> Load File Error: " + ex.getMessage());
+	    }
     	
         return doublePoint;
     }
