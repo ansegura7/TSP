@@ -76,7 +76,11 @@ public class TestEngine {
 		        		
 		            	// Waiting for the results
 						tspAlgo.join();
-						System.out.println("   Algorithm results: Tour length: " + tspAlgo.getTourLength() + " units, Elapsed time: " + tspAlgo.getElapsedTime() + " ms");
+						
+						// Show and save the results
+						tspCase.currTour = tspAlgo.getTourLength() * fm.getFactorValue();
+						tspCase.elapsedTime = tspAlgo.getElapsedTime();
+						System.out.println("   Algorithm results: Tour length: " + tspCase.currTour + " units, Tour MAE: " + tspCase.getTourMAE() + ", Elapsed time: " + tspCase.elapsedTime + " ms");
 	            	}
 	            	else
 	            	{

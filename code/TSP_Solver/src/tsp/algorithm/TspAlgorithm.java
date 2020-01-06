@@ -22,6 +22,6 @@ public abstract class TspAlgorithm extends Thread {
     public abstract void init(DoublePoint[] points);
     public abstract void solve();
     public abstract double getTourLength();
-    public abstract long getElapsedTime();
+    public abstract int getElapsedTime();
     
 }

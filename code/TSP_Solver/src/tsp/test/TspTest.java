@@ -16,6 +16,7 @@ public class TspTest {
 	public double bestTour;
 	public double currTour;
 	public int elapsedTime;
+	private double errorTour;
 	
 	// TspTest constructor
 	public TspTest(String name, String filePath, double bestTour) {
@@ -23,7 +24,18 @@ public class TspTest {
 		this.filePath = filePath;
 		this.bestTour = bestTour;
 		this.currTour = 0.0d;
-		elapsedTime = 0;
+		this.elapsedTime = 0;
+		this.errorTour = 0.0d;
+	}
+	
+	// Return tour MAE (Mean Absolute Error)
+	public double getTourMAE()
+	{
+		if (this.bestTour > 0)
+			this.errorTour = Math.abs(this.bestTour - this.currTour) / this.bestTour;
+		else
+			this.errorTour = 0.0d;
+		return this.errorTour;
 	}
 	
 }

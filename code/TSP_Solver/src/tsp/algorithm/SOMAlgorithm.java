@@ -99,9 +99,9 @@ public class SOMAlgorithm extends TspAlgorithm
     }
     
     // Returns the time it took for the algorithm to resolve the TSP
-    public long getElapsedTime()
+    public int getElapsedTime()
     {
-    	return this.elapsedTime;
+    	return (int)this.elapsedTime;
     }
     
     // Method that looks for the initial position of the SOM
