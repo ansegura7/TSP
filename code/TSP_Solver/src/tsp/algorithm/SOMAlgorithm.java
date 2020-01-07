@@ -18,7 +18,7 @@ import tsp.util.Node;
 public class SOMAlgorithm extends TspAlgorithm
 {
     // Class constants
-    private final static int MAX_ITERATIONS = 1000;
+    private final static int MAX_ITERATIONS = 1500;
     private final static double LAMBDA = 0.2d;
     
     // Class variables
@@ -26,7 +26,7 @@ public class SOMAlgorithm extends TspAlgorithm
     private DoublePoint[] doublePoint;
     private DoubleLinkedList graph;
     private int[] cache;
-    private int msSleep = 50;
+    private int paintWait = 50;
     private boolean display;
     private long elapsedTime;
     
@@ -62,16 +62,19 @@ public class SOMAlgorithm extends TspAlgorithm
     {
         if (doublePoint != null) {
         	elapsedTime = System.nanoTime();
+        	int nIter;
         	
         	while (graph.getNumNodes() < doublePoint.length * 3 / 2)
             {
-                for(int i = 0; i < (int)(graph.getNumNodes() * MAX_ITERATIONS / doublePoint.length); i++)
+        		nIter = (int)(graph.getNumNodes() * MAX_ITERATIONS / doublePoint.length);
+                for(int i = 0; i < nIter; i++)
                 	updateSOM();
                 
                 addNodes();
                 if (display)
                 	paint();
             }
+        	
         	finish();
         	elapsedTime = ((System.nanoTime() - elapsedTime) / 1000000);
         	
@@ -90,7 +93,7 @@ public class SOMAlgorithm extends TspAlgorithm
     	
     	do
     	{
-    		tour += Math.sqrt( Math.pow(node.x - node.next.x, 2) + Math.pow(node.y - node.next.y, 2) );
+    		tour += getEuclideanDistance(node, node.next);
             node = node.next;
     	}
     	while (node != graph.getLastNode());
@@ -107,39 +110,31 @@ public class SOMAlgorithm extends TspAlgorithm
     // Method that looks for the initial position of the SOM
     private void setInitialPoints()
     {
-        if(doublePoint == null)
+        if (doublePoint == null)
             return;
         
-        double x = 0;
-        double y = 0;
+        double cx = 0;
+        double cy = 0;
         for (int i = 0; i < doublePoint.length; i++)
         {
-            x += doublePoint[i].x;
-            y += doublePoint[i].y;
+            cx += doublePoint[i].x;
+            cy += doublePoint[i].y;
         }
-        x /= doublePoint.length;
-        y /= doublePoint.length;
+        cx /= doublePoint.length;
+        cy /= doublePoint.length;
         
         // Search limit nodes
-        DoublePoint norte = new DoublePoint(x, y*0.8);
-        DoublePoint noreste = new DoublePoint(x*1.1, y*0.9);
-        DoublePoint este = new DoublePoint(x*1.2, y);
-        DoublePoint sureste = new DoublePoint(x*1.1, y*1.1);
-        DoublePoint sur = new DoublePoint(x, y*1.2);
-        DoublePoint suroeste = new DoublePoint(x*0.9, y*1.1);
-        DoublePoint oeste = new DoublePoint(x*0.8,y);
-        DoublePoint noroeste = new DoublePoint(x*0.9, y*0.9);
+        DoublePoint nNorth = new DoublePoint(cx, cy * 0.8);
+        DoublePoint nEast = new DoublePoint(cx * 1.2, cy);
+        DoublePoint nSouth = new DoublePoint(cx, cy * 1.2);
+        DoublePoint nWest = new DoublePoint(cx * 0.8, cy);
         
         // Save graph data
         graph = new DoubleLinkedList();
-        graph.rightInsert(new Node(0, norte), graph.getLastNode());
-        graph.rightInsert(new Node(1, noreste), graph.search(0));
-        graph.rightInsert(new Node(2, este), graph.search(1));
-        graph.rightInsert(new Node(3, sureste), graph.search(2));
-        graph.rightInsert(new Node(4, sur), graph.search(3));
-        graph.rightInsert(new Node(5, suroeste), graph.search(4));
-        graph.rightInsert(new Node(6, oeste), graph.search(5));
-        graph.rightInsert(new Node(7, noroeste), graph.search(6));
+        graph.rightInsert(new Node(0, nNorth), null);
+        graph.rightInsert(new Node(1, nEast), graph.search(0));
+        graph.rightInsert(new Node(2, nSouth), graph.search(1));
+        graph.rightInsert(new Node(3, nWest), graph.search(2));
     }
     
     // Method in charge of drawing. Use a separate thread to make the drawings
@@ -147,44 +142,44 @@ public class SOMAlgorithm extends TspAlgorithm
     {
     	if (env != null) {
 	        new PaintProcess(env.envCanvas, doublePoint, graph);
-	        try{ sleep(msSleep); } catch(Exception e) { System.out.println("   Error: " + e.getMessage()); }
+	        try{ sleep(paintWait); } catch(Exception e) { System.out.println("   Error: " + e.getMessage()); }
     	}
     }
     
     // Method that update the SOM
     private void updateSOM()
     {
-        int upGanadora = 0;
-        int pos = (int)(Math.random()*doublePoint.length);
-        int upCache = searchCache(pos);
+        int winnerNode = -1;
+        int winnerIx = (int)(Math.random() * doublePoint.length);
+        int upCache = searchCache(winnerIx);
         
         if (upCache != -1) {
-            upGanadora = upCache;
+        	winnerNode = upCache;
         }
         else
         {
-            double distUPGanadora = Double.MAX_VALUE;
-            double distUP = 0.0d;
+            double winnerDist = Double.MAX_VALUE;
+            double localDist = 0.0d;
             Node node = graph.getLastNode();
             
             // Search for the node closest to that impulse
             do
             {
-                distUP = Math.sqrt( Math.pow( doublePoint[pos].x-node.x ,2) + Math.pow( doublePoint[pos].y-node.y ,2) );
-                if (distUP < distUPGanadora)
+            	localDist = getEuclideanDistance(doublePoint[winnerIx], node);
+                if (localDist < winnerDist)
                 {
-                    distUPGanadora = distUP;  
-                    upGanadora = node.keyName;
+                	winnerDist = localDist;  
+                    winnerNode = node.keyName;
                 }
                 node = node.next;
             }
             while (node != graph.getLastNode());
-            cache[pos] = upGanadora;
+            cache[winnerIx] = winnerNode;
         }
         
         // Move the winning node and give it its prize
-        graph.search(upGanadora).victories++;
-        closeupPhase(upGanadora, pos);
+        graph.search(winnerNode).victories++;
+        closeupPhase(winnerNode, winnerIx);
     }
     
     // Method of the network nodes insertion
@@ -193,9 +188,10 @@ public class SOMAlgorithm extends TspAlgorithm
         Node ini = graph.getLastNode();
         Node node = null;
         int vicGanadora = 0;
+        
         do
         {
-            if(ini.victories > vicGanadora)
+            if (ini.victories > vicGanadora)
             {
                 vicGanadora = ini.victories;
                 node = ini;
@@ -228,7 +224,7 @@ public class SOMAlgorithm extends TspAlgorithm
         
         for (int i = 0; i < doublePoint.length; i++)
         {
-            if(cache[i] != -1  && !graph.search(cache[i]).assigned) {
+            if (cache[i] != -1  && !graph.search(cache[i]).assigned) {
             	key = cache[i];
             }
             else
@@ -239,7 +235,7 @@ public class SOMAlgorithm extends TspAlgorithm
                 {
                     if (!node.assigned)
                     {
-                        dist = Math.sqrt( Math.pow( Math.abs(doublePoint[i].x-node.x) ,2) + Math.pow( Math.abs(doublePoint[i].y-node.y) ,2) );
+                        dist = getEuclideanDistance(doublePoint[i], node);
                         if (dist < distUP)
                         {
                             distUP = dist;
@@ -263,16 +259,16 @@ public class SOMAlgorithm extends TspAlgorithm
     // Method that eliminate isolated nodes
     private void removeIsolatedNodes()
     {
-        Node node = graph.getLastNode();
-        Node aux = null;
-        int g = graph.getNumNodes();
+        Node currNode = graph.getLastNode();
+        Node auxNode = null;
+        int n = graph.getNumNodes();
         
-        for (int i = 0; i <= g; i++)
+        for (int i = 0; i <= n; i++)
         {
-            aux = node.next;
-            if(!node.assigned)
-                graph.deleteNode(node);
-            node = aux;
+        	auxNode = currNode.next;
+            if (!currNode.assigned)
+            	graph.deleteNode(currNode);
+            currNode = auxNode;
         }
         
     }
@@ -280,31 +276,41 @@ public class SOMAlgorithm extends TspAlgorithm
     // This method searches the cache for a stimulus
     private int searchCache(int stimulus)
     {
+    	int up = cache[stimulus];
         if (cache[stimulus] != -1)
-        {
-            int up = cache[stimulus];
-            cache[stimulus] = -1; 
-            return up;
-        }
-        return -1;
+        	cache[stimulus] = -1; 
+        
+        return up;
     }
 
     // This method brings the winning node and its neighbors closer to the stimulus.
-    private void closeupPhase(int n, int pos)
+    private void closeupPhase(int n, int ix)
     {
         Node node = graph.search(n);
         
         // Update target node position
-        node.x += LAMBDA * (doublePoint[pos].x - node.x);
-        node.y += LAMBDA * (doublePoint[pos].y - node.y);
+        node.x += LAMBDA * (doublePoint[ix].x - node.x);
+        node.y += LAMBDA * (doublePoint[ix].y - node.y);
         
         // Update right neighbor node position
-        node.previous.x += 0.4 * LAMBDA * (doublePoint[pos].x - node.previous.x);
-        node.previous.y += 0.4 * LAMBDA * (doublePoint[pos].y - node.previous.y);
+        node.previous.x += 0.4 * LAMBDA * (doublePoint[ix].x - node.previous.x);
+        node.previous.y += 0.4 * LAMBDA * (doublePoint[ix].y - node.previous.y);
         
         // Update left neighbor node position
-        node.next.x += 0.4 * LAMBDA * (doublePoint[pos].x - node.next.x);
-        node.next.y += 0.4 * LAMBDA * (doublePoint[pos].y - node.next.y);
+        node.next.x += 0.4 * LAMBDA * (doublePoint[ix].x - node.next.x);
+        node.next.y += 0.4 * LAMBDA * (doublePoint[ix].y - node.next.y);
+    }
+    
+    // Returns the Euclidean distance between 2 points in the plane
+    private double getEuclideanDistance(Node a, Node b) {
+    	return getEuclideanDistance(new DoublePoint(a.x, a.y), b);
+    }
+    
+    private double getEuclideanDistance(DoublePoint a, Node b) {
+    	if (a != null && b != null)
+    		return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+    	
+    	return Double.MAX_VALUE;
     }
     
 }

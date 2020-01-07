@@ -95,14 +95,12 @@ public class TestEngine {
 						tspCase.elapsedTime = tspAlgo.getElapsedTime();
 						System.out.println("   Algorithm results: Tour length: " + tspCase.currTour + " units, Tour MAE: " + tspCase.getTourMAE(false) + ", Elapsed time: " + tspCase.elapsedTime + " ms");
 					}
-					catch (InterruptedException e)
-					{
+					catch (InterruptedException e) {
 						e.printStackTrace();
 						System.err.println(">> Batch Process Error: " + e.getMessage());
 					}
             	}
-            	else
-            	{
+            	else {
             		System.out.println("   The data was not loaded - " + sdf.format(new Date()));
             	}
 			}
