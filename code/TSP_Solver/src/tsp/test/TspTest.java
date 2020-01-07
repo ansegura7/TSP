@@ -29,10 +29,13 @@ public class TspTest {
 	}
 	
 	// Return tour MAE (Mean Absolute Error)
-	public double getTourMAE()
+	public double getTourMAE(boolean inPerc)
 	{
-		if (this.bestTour > 0)
+		if (this.bestTour > 0) {
 			this.errorTour = Math.abs(this.bestTour - this.currTour) / this.bestTour;
+			if (inPerc)
+				this.errorTour *= 100;
+		}
 		else
 			this.errorTour = 0.0d;
 		return this.errorTour;

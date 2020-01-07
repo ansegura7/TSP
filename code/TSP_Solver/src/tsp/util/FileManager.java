@@ -33,7 +33,7 @@ public class FileManager
         doublePoint = null;
         fileName = "";
         factorValue = 1.0d;
-        jfc = new JFileChooser("C:/Users/Andres/Documents/GitHub/TSP/data/");
+        jfc = new JFileChooser();
         br = null;
     }
 
@@ -126,7 +126,6 @@ public class FileManager
 					}
 					else if (tokens[0].toString().startsWith("NODE_COORD_SECTION") && nPoints > 0) {
 						doublePoint = new DoublePoint[nPoints];
-						System.out.println("   Init Double Point list");
 					}
 					else if (doublePoint != null) {
 						tokens = line.split("\\s+");

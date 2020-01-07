@@ -43,7 +43,7 @@ public class Environment extends javax.swing.JFrame
     private Dimension screenSize;
     private int w;
     private int h;
-    private DecimalFormat f;
+    private DecimalFormat df;
     
     // Algorithms
     private TspAlgorithm tspAlgo;
@@ -65,7 +65,7 @@ public class Environment extends javax.swing.JFrame
         fm = new FileManager();
         doublePoint = null;
         tspAlgo = null;
-        f = new DecimalFormat("##.00");
+        df = new DecimalFormat("##.00");
     }
     
     // Method to Initialize the graphic components
@@ -249,7 +249,7 @@ public class Environment extends javax.swing.JFrame
     	double tourLength = tspAlgo.getTourLength() * fm.getFactorValue();
     	
         jLabel2.setText("Elapsed time: " + elapsedTime + " ms");
-        jLabel3.setText("TSP tour length: " + f.format(tourLength) + " units");
+        jLabel3.setText("TSP tour length: " + df.format(tourLength) + " units");
         jLabel4.setText("Number of points: " + doublePoint.length);
         System.out.println("   Algorithm results: Tour length: " + tourLength + " units, Elapsed time: " + tspAlgo.getElapsedTime() + " ms");
     }
