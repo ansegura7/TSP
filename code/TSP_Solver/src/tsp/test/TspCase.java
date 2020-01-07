@@ -8,20 +8,22 @@
 
 package tsp.test;
 
-public class TspTest {
+public class TspCase {
 	
 	// Class variables
 	public String name;
 	public String filePath;
+	public int nPoints;
 	public double bestTour;
 	public double currTour;
 	public int elapsedTime;
 	private double errorTour;
 	
-	// TspTest constructor
-	public TspTest(String name, String filePath, double bestTour) {
+	// TspCase constructor
+	public TspCase(String name, String filePath, int nPoints, double bestTour) {
 		this.name = name;
 		this.filePath = filePath;
+		this.nPoints = nPoints;
 		this.bestTour = bestTour;
 		this.currTour = 0.0d;
 		this.elapsedTime = 0;

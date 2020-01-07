@@ -65,8 +65,8 @@ public class TestEngine {
 	// Batch process that calculates the TSP for each case
 	private static void runBatchTest(String filesFolder, String algorithm, int nTest)
 	{
-		ArrayList<TspTest> tspFiles = readFileList(filesFolder);
-		TspTest tspCase = null;
+		ArrayList<TspCase> tspFiles = readFileList(filesFolder);
+		TspCase tspCase = null;
 		TspAlgorithm tspAlgo = null;
 		
 		for (int i = 0; i < tspFiles.size(); i++) {
@@ -117,9 +117,9 @@ public class TestEngine {
 	}
 
 	// Read the TSP file list
-	private static ArrayList<TspTest> readFileList(String filesFolder)
+	private static ArrayList<TspCase> readFileList(String filesFolder)
 	{
-		ArrayList<TspTest> tspFiles = new ArrayList<TspTest>();
+		ArrayList<TspCase> tspFiles = new ArrayList<TspCase>();
 		
 		String testPath = "test/tests.dat";
 		File f = new File(testPath);
@@ -131,6 +131,7 @@ public class TestEngine {
 				String[] tokens;
 				String fileName;
 				String filePath;
+				int nPoints;
 				double bestTour;
 				
 		    	br = new BufferedReader( new FileReader(testPath));
@@ -141,10 +142,11 @@ public class TestEngine {
 		    		
 		    		if (tokens.length >= 2) {
 		    			fileName = tokens[0].trim();
-		    			filePath = filesFolder + fileName.toLowerCase() + ".tsp.txt";  
+		    			filePath = filesFolder + fileName.toLowerCase() + ".tsp.txt";
+		    			nPoints = Integer.parseInt(fileName.replaceAll("([A-Za-z])", ""));
 		    			bestTour = Double.parseDouble(tokens[1].trim());
 		    			
-		    			tspFiles.add( new TspTest(fileName, filePath, bestTour));
+		    			tspFiles.add( new TspCase(fileName, filePath, nPoints, bestTour));
 		    		}
 		    		line = br.readLine();
 		    	}
@@ -162,23 +164,24 @@ public class TestEngine {
 	}
 	
 	// Save the TSP cases results to CSV file
-	private static void saveTestResultsToCSV(ArrayList<TspTest> tspFiles) {
+	private static void saveTestResultsToCSV(ArrayList<TspCase> tspFiles) {
 		String resultPath = "test/results.csv";
 		FileWriter writer = null;
 		StringBuilder sb = null;
-		TspTest tspCase = null;
+		TspCase tspCase = null;
 		
 	    try {
 	    	writer = new FileWriter(new File(resultPath), false);
 	    	
 	    	// Add header
 	    	sb = new StringBuilder();
-	    	sb.append("file_name,best_tout,curr_tour,mae(%),elapsed_time(ms)\n");
+	    	sb.append("file_name,n_points,best_tout,curr_tour,mae(%),elapsed_time(ms)\n");
 	    	
 	    	// Add rows
 	    	for (int i = 0; i < tspFiles.size(); i++) {
 	    		tspCase = tspFiles.get(i);
 	    		sb.append(tspCase.name + ",");
+	    		sb.append(tspCase.nPoints+ ",");
 	    		sb.append(df.format(tspCase.bestTour) + ",");
 	    		sb.append(df.format(tspCase.currTour) + ",");
 	    		sb.append(df.format(tspCase.getTourMAE(true)) + ",");
