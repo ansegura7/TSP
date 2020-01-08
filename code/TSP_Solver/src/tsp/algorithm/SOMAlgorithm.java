@@ -64,9 +64,9 @@ public class SOMAlgorithm extends TspAlgorithm
         	elapsedTime = System.nanoTime();
         	int nIter;
         	
-        	while (graph.getNumNodes() < doublePoint.length * 3 / 2)
+        	while (graph.size() < doublePoint.length * 3 / 2)
             {
-        		nIter = (int)(graph.getNumNodes() * MAX_ITERATIONS / doublePoint.length);
+        		nIter = (int)(graph.size() * MAX_ITERATIONS / doublePoint.length);
                 for(int i = 0; i < nIter; i++)
                 	updateSOM();
                 
@@ -89,14 +89,14 @@ public class SOMAlgorithm extends TspAlgorithm
     public double getTourLength()
     {
     	double tour = 0.0d;
-    	Node node = graph.getLastNode();
+    	Node node = graph.getLast();
     	
     	do
     	{
     		tour += getEuclideanDistance(node, node.next);
             node = node.next;
     	}
-    	while (node != graph.getLastNode());
+    	while (node != graph.getLast());
     	
     	return tour;
     }
@@ -132,9 +132,9 @@ public class SOMAlgorithm extends TspAlgorithm
         // Save graph data
         graph = new DoubleLinkedList();
         graph.rightInsert(new Node(0, nNorth), null);
-        graph.rightInsert(new Node(1, nEast), graph.search(0));
-        graph.rightInsert(new Node(2, nSouth), graph.search(1));
-        graph.rightInsert(new Node(3, nWest), graph.search(2));
+        graph.rightInsert(new Node(1, nEast), graph.get(0));
+        graph.rightInsert(new Node(2, nSouth), graph.get(1));
+        graph.rightInsert(new Node(3, nWest), graph.get(2));
     }
     
     // Method in charge of drawing. Use a separate thread to make the drawings
@@ -160,7 +160,7 @@ public class SOMAlgorithm extends TspAlgorithm
         {
             double winnerDist = Double.MAX_VALUE;
             double localDist = 0.0d;
-            Node node = graph.getLastNode();
+            Node node = graph.getLast();
             
             // Search for the node closest to that impulse
             do
@@ -173,19 +173,19 @@ public class SOMAlgorithm extends TspAlgorithm
                 }
                 node = node.next;
             }
-            while (node != graph.getLastNode());
+            while (node != graph.getLast());
             cache[winnerIx] = winnerNode;
         }
         
         // Move the winning node and give it its prize
-        graph.search(winnerNode).victories++;
+        graph.get(winnerNode).victories++;
         closeupPhase(winnerNode, winnerIx);
     }
     
     // Method of the network nodes insertion
     private void addNodes()
     {   
-        Node ini = graph.getLastNode();
+        Node ini = graph.getLast();
         Node node = null;
         int vicGanadora = 0;
         
@@ -198,19 +198,19 @@ public class SOMAlgorithm extends TspAlgorithm
             }
             ini = ini.next;
         }
-        while (ini != graph.getLastNode());
+        while (ini != graph.getLast());
         
         node.victories = 0;
         
         // A new node is inserted to the right
         double x = (node.x + node.next.x) / 2;
         double y = (node.y + node.next.y) / 2;
-        graph.rightInsert(new Node(graph.getNumNodes()+1, 0, x, y), node);
+        graph.rightInsert(new Node(graph.size()+1, 0, x, y), node);
         
         // A new node is inserted to the left
         x = (node.x + node.previous.x) / 2;
         y = (node.y + node.previous.y) / 2;
-        graph.leftInsert(new Node(graph.getNumNodes()+1, 0, x, y), node);
+        graph.leftInsert(new Node(graph.size()+1, 0, x, y), node);
     }
     
     // This method ends the TSP. Check which stimuli need a new node
@@ -224,12 +224,12 @@ public class SOMAlgorithm extends TspAlgorithm
         
         for (int i = 0; i < doublePoint.length; i++)
         {
-            if (cache[i] != -1  && !graph.search(cache[i]).assigned) {
+            if (cache[i] != -1  && !graph.get(cache[i]).assigned) {
             	key = cache[i];
             }
             else
             {
-                node = graph.getLastNode();
+                node = graph.getLast();
                 distUP = Double.MAX_VALUE;
                 do
                 {
@@ -244,11 +244,11 @@ public class SOMAlgorithm extends TspAlgorithm
                     }
                     node = node.next;
                 }
-                while (node != graph.getLastNode());
+                while (node != graph.getLast());
             }
             
             // Update
-            node = graph.search(key);
+            node = graph.get(key);
             node.assigned = true;
             node.x = doublePoint[i].x;
             node.y = doublePoint[i].y;
@@ -259,15 +259,15 @@ public class SOMAlgorithm extends TspAlgorithm
     // Method that eliminate isolated nodes
     private void removeIsolatedNodes()
     {
-        Node currNode = graph.getLastNode();
+        Node currNode = graph.getLast();
         Node auxNode = null;
-        int n = graph.getNumNodes();
+        int n = graph.size();
         
         for (int i = 0; i <= n; i++)
         {
         	auxNode = currNode.next;
             if (!currNode.assigned)
-            	graph.deleteNode(currNode);
+            	graph.remove(currNode);
             currNode = auxNode;
         }
         
@@ -286,7 +286,7 @@ public class SOMAlgorithm extends TspAlgorithm
     // This method brings the winning node and its neighbors closer to the stimulus.
     private void closeupPhase(int n, int ix)
     {
-        Node node = graph.search(n);
+        Node node = graph.get(n);
         
         // Update target node position
         node.x += LAMBDA * (doublePoint[ix].x - node.x);

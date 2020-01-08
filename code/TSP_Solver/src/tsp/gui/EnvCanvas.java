@@ -83,7 +83,7 @@ public class EnvCanvas extends Canvas
         if (graph != null)
         {
             g.setColor(NTW_COLOR);
-            Node node = graph.getLastNode();
+            Node node = graph.getLast();
             do
             {
             	xv = (int)(node.x * pFactor);
@@ -94,7 +94,7 @@ public class EnvCanvas extends Canvas
                 g.drawLine((hMargin + xv), (vMargin + yv), hMargin + xn, vMargin + yn);
                 node = node.next;
             }
-            while (node != graph.getLastNode());
+            while (node != graph.getLast());
         }
         
     }

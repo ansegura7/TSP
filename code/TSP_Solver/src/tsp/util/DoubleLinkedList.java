@@ -25,37 +25,25 @@ public class DoubleLinkedList
     // Returns if the list is empty or not
     public boolean isEmpty()
     {
-        return lastNode == null;
+        return (lastNode == null);
     }
     
     // Returns the number of nodes in the list
-    public int getNumNodes()
+    public int size()
     {
         return nNodes;
     }
     
     // Returns the last selected node
-    public Node getLastNode()
+    public Node getLast()
     {
     	return lastNode;
     }
-	
-    // Returns the next node of a given node
-    public Node next(Node n)
-    {
-    	return n.next;
-    }
-
-    // Returns the previous node of a given node
-    public Node previous(Node n)
-    {
-    	return n.previous;
-    }
 
     // Search for a node from its key name
-    public Node search(int key)
+    public Node get(int key)
     {
-		Node n = getLastNode();
+		Node n = getLast();
 		while (n.next != lastNode && n.keyName != key)
 			n = n.next;
 		
@@ -98,9 +86,9 @@ public class DoubleLinkedList
     }
     
     // Delete a node from the list
-    public void deleteNode(Node node)
+    public void remove(Node node)
     {
-        if(node == lastNode)
+        if (node == lastNode)
             lastNode = node.next;
         
         node.previous.next = node.next;
