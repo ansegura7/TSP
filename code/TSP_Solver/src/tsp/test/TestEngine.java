@@ -41,21 +41,22 @@ public class TestEngine {
 	public static void main(String[] args) {
 		System.out.println(">> Start Batch Process - " + sdf.format(new Date()));
 		
-		if (args.length > 1) {
+		if (args.length > 0) {
 			// Batch engine variables
 			String filesFolder = args[0];
 			String algorithm = "SOM";
 			int nTest = 5;
 			
-			if (args.length > 2) {
+			if (args.length > 1) {
 				algorithm = args[1];
 				
-				if (args.length > 3) {
+				if (args.length > 2) {
 					nTest = Integer.parseInt(args[2]);
 				}
 			}
 			
 			// Run Test Engine in Batch mode
+			System.out.println("   Directory: " + filesFolder + ", Algorithm: " + algorithm + ", N Tests: " + nTest);
 			runBatchTest(filesFolder, algorithm, nTest);
 		}
 		
@@ -75,30 +76,40 @@ public class TestEngine {
 			if (new File(tspCase.filePath).exists()) {
 				System.out.println(" - The file will be processed: " + tspCase.name + " by " + algorithm + " algorithm - " + sdf.format(new Date()));
 				DoublePoint[] dp = fm.loadFile(tspCase.filePath);
+				double currTour = 0;
+				int elapsedTime = 0;
 				
-            	if (dp != null) {
+            	if (dp != null && nTest > 0) {
             		
-            		if (algorithm.equals("SOM")) {
-                		tspAlgo = new SOMAlgorithm();
-                	}
-            		
-	            	// Set data and start algorithm
-	            	tspAlgo.init(dp);
-	        		tspAlgo.start();
-	        		
-					try {
-		            	// Waiting for the results
-						tspAlgo.join();
-						
-						// Show and save the results
-						tspCase.currTour = tspAlgo.getTourLength() * fm.getFactorValue();
-						tspCase.elapsedTime = tspAlgo.getElapsedTime();
-						System.out.println("   Algorithm results: Tour length: " + tspCase.currTour + " units, Tour MAE: " + tspCase.getTourMAE(false) + ", Elapsed time: " + tspCase.elapsedTime + " ms");
-					}
-					catch (InterruptedException e) {
-						e.printStackTrace();
-						System.err.println(">> Batch Process Error: " + e.getMessage());
-					}
+            		// Run N times the TSP algorithm and then average the results 
+        			for (int j = 0; j < nTest; j++) {
+        				
+        				// Select the TSP algorithm
+                		if (algorithm.equals("SOM"))
+                    		tspAlgo = new SOMAlgorithm();
+        				
+    	            	// Set data and start algorithm
+    	            	tspAlgo.init(dp);
+    	        		tspAlgo.start();
+    	        		
+    					try {
+    		            	// Waiting for the results
+    						tspAlgo.join();
+    						
+    						// Accumulate results
+    						currTour += tspAlgo.getTourLength() * fm.getFactorValue();
+    						elapsedTime += tspAlgo.getElapsedTime();
+    					}
+    					catch (InterruptedException e) {
+    						e.printStackTrace();
+    						System.err.println(">> Batch Process Error: " + e.getMessage());
+    					}
+        			}
+        			
+        			// Show and save the results
+					tspCase.currTour = currTour / nTest;
+					tspCase.elapsedTime = elapsedTime / nTest;
+					System.out.println("   Algorithm results: Tour length: " + tspCase.currTour + " units, Tour MAE: " + tspCase.getTourMAPE(false) + ", Elapsed time: " + tspCase.elapsedTime + " ms");
             	}
             	else {
             		System.out.println("   The data was not loaded - " + sdf.format(new Date()));
@@ -182,7 +193,7 @@ public class TestEngine {
 	    		sb.append(tspCase.nPoints+ ",");
 	    		sb.append(df.format(tspCase.bestTour) + ",");
 	    		sb.append(df.format(tspCase.currTour) + ",");
-	    		sb.append(df.format(tspCase.getTourMAE(true)) + ",");
+	    		sb.append(df.format(tspCase.getTourMAPE(true)) + ",");
 	    		sb.append(tspCase.elapsedTime + "\n");
 	    	}
 	    	

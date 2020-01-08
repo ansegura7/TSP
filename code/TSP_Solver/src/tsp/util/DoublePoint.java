@@ -16,9 +16,15 @@ public class DoublePoint
     public double y;
     
     /** Creates a new instance of DoublePoint */
-    public DoublePoint(double x, double y)
-    {
+    public DoublePoint() {
+    	this.x = 0;
+    	this.y = 0;
+    }
+    
+    /** Creates a new instance of DoublePoint */
+    public DoublePoint(double x, double y) {
         this.x = x;
         this.y = y;
     }
+    
 }

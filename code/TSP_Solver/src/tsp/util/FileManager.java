@@ -169,4 +169,5 @@ public class FileManager
     {
     	return this.factorValue;
     }
+    
 }

@@ -30,8 +30,8 @@ public class TspCase {
 		this.errorTour = 0.0d;
 	}
 	
-	// Return tour MAE (Mean Absolute Error)
-	public double getTourMAE(boolean inPerc)
+	// Return tour MAPE (Mean Absolute Percentage Error)
+	public double getTourMAPE(boolean inPerc)
 	{
 		if (this.bestTour > 0) {
 			this.errorTour = Math.abs(this.bestTour - this.currTour) / this.bestTour;
