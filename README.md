@@ -23,6 +23,10 @@ NODE_COORD_SECTION
   5 256 157
   6 246 157
   7 236 169
+  .
+  .
+  .
+  EOF
 ```
 
 # Results
@@ -42,6 +46,15 @@ Below, the results for 10 different TSP files using the SOM algorithm implementa
 | DCB2086 | 2086 | 6600.00 | 7516.3060 | 13.8834 | 21505 |
 
 ![som-xqf131 solution](https://raw.githubusercontent.com/ansegura7/TSP/master/images/results1.PNG)
+
+## Program Execution Rules
+The project has an executable in the 'jar' folder.
+
+Execution example:
+``` console
+    java -jar TSP_Solver-v0.9.jar
+```
+The .JAR program must be run with Java 7 or higher.
 
 ## Contributing and Feedback
 Any kind of feedback/criticism would be greatly appreciated (algorithm design, documentation, improvement ideas, spelling mistakes, etc...).
