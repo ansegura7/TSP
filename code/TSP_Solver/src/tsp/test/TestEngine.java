@@ -184,7 +184,7 @@ public class TestEngine {
 	    	
 	    	// Add header
 	    	sb = new StringBuilder();
-	    	sb.append("file_name,n_points,best_tout,curr_tour,mae(%),elapsed_time(ms)\n");
+	    	sb.append("file_name,n_points,best_tout,curr_tour,mape(%),elapsed_time(ms)\n");
 	    	
 	    	// Add rows
 	    	for (int i = 0; i < tspFiles.size(); i++) {

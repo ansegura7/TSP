@@ -1,4 +1,4 @@
-file_name,n_points,best_tout,curr_tour,mae(%),elapsed_time(ms)
+file_name,n_points,best_tout,curr_tour,mape(%),elapsed_time(ms)
 XQF131,131,564.0000,603.0747,6.9281,91
 XQG237,237,1019.0000,1098.7306,7.8244,281
 PMA343,343,1368.0000,1466.9586,7.2338,500
