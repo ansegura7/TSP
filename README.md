@@ -45,6 +45,8 @@ Below, the results for 10 different TSP files using the SOM algorithm implementa
 | DJC1785 | 1785 | 6115.00 | 6908.7349 | 12.9801 | 14493 |
 | DCB2086 | 2086 | 6600.00 | 7516.3060 | 13.8834 | 21505 |
 
+With a weighted average MAPE of: 12.5654 %.
+
 ![som-xqf131 solution](https://raw.githubusercontent.com/ansegura7/TSP/master/images/results1.PNG)
 
 ## Program Execution Rules

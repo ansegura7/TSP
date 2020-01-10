@@ -178,29 +178,42 @@ public class TestEngine {
 		FileWriter writer = null;
 		StringBuilder sb = null;
 		TspCase tspCase = null;
+		double mape = 0.0;
+		int totalPoints = 0;
+		double avgMAPE = 0.0d;
 		
 	    try {
 	    	writer = new FileWriter(new File(resultPath), false);
 	    	
-	    	// Add header
+	    	// Add header to CSV file
 	    	sb = new StringBuilder();
 	    	sb.append("file_name,n_points,best_tout,curr_tour,mape(%),elapsed_time(ms)\n");
 	    	
-	    	// Add rows
+	    	// Add rows to CSV file
 	    	for (int i = 0; i < tspFiles.size(); i++) {
 	    		tspCase = tspFiles.get(i);
+	    		mape = tspCase.getTourMAPE(true);
+	    		
+	    		// Add case results to file
 	    		sb.append(tspCase.name + ",");
-	    		sb.append(tspCase.nPoints+ ",");
+	    		sb.append(tspCase.nPoints + ",");
 	    		sb.append(df.format(tspCase.bestTour) + ",");
 	    		sb.append(df.format(tspCase.currTour) + ",");
-	    		sb.append(df.format(tspCase.getTourMAPE(true)) + ",");
+	    		sb.append(df.format(mape) + ",");
 	    		sb.append(tspCase.elapsedTime + "\n");
+	    		
+	    		// The results of each case are weighted
+				totalPoints += tspCase.nPoints;
+				avgMAPE += mape * tspCase.nPoints;
 	    	}
 	    	
-	    	// Save data and close file
+	    	// Save data and close the CSV file
 	        writer.write(sb.toString());
 	        writer.close();
 	        
+	        // Showing the weighted average MAPE
+	        avgMAPE /= totalPoints;  
+	        System.out.println("   The weighted average MAPE: " + avgMAPE);
 	    }
 	    catch (IOException e) {
 	        System.out.println(">> Save File Error:" + e.getMessage());
