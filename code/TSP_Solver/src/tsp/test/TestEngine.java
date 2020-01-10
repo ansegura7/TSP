@@ -213,7 +213,7 @@ public class TestEngine {
 	        
 	        // Showing the weighted average MAPE
 	        avgMAPE /= totalPoints;  
-	        System.out.println("   The weighted average MAPE: " + avgMAPE);
+	        System.out.println(" - The weighted average MAPE: " + avgMAPE);
 	    }
 	    catch (IOException e) {
 	        System.out.println(">> Save File Error:" + e.getMessage());

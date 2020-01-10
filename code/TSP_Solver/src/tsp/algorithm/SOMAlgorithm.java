@@ -8,6 +8,8 @@
 
 package tsp.algorithm;
 
+import java.util.Random;
+
 import tsp.gui.Environment;
 import tsp.gui.PaintProcess;
 import tsp.util.DoubleLinkedList;
@@ -20,13 +22,17 @@ public class SOMAlgorithm extends TspAlgorithm
     // Class constants
     private final static int MAX_ITERATIONS = 1500;
     private final static double LAMBDA = 0.2d;
+    private final static int PAINT_WAIT = 50;
     
-    // Class variables
+    // Class main variables
     private Environment env;
     private DoublePoint[] doublePoint;
     private DoubleLinkedList graph;
+    private int nPoints; 
+    private Random rnd =	new Random();
+    
+    // Other variables
     private int[] cache;
-    private int paintWait = 50;
     private boolean display;
     private long elapsedTime;
     
@@ -39,22 +45,24 @@ public class SOMAlgorithm extends TspAlgorithm
     /** Creates a new instance of SOMAlgorithm */
     public SOMAlgorithm(Environment env, boolean b)
     {
-        this.env = env;
-        this.display = b;
+    	this.env = env;
         this.doublePoint = null;
         this.graph = null;
+        this.nPoints = 0;        
         this.cache = null;
+        this.display = b;
+        this.elapsedTime = 0l;
     }
     
     // Function based on the initial cloud of points established by the initial SOM
     public void init(DoublePoint[] points)
     {
-        this.doublePoint = points;
-        setInitialPoints();
-        if (display)
-        	paint();
-        cache = new int[points.length];
+        doublePoint = points;
+        nPoints = points.length;
+        cache = new int[nPoints];
         java.util.Arrays.fill(cache, -1);
+        
+        setInitialPoints();
     }
     
     // This is the method that solves the TSP problem using SOM algorithm
@@ -64,9 +72,9 @@ public class SOMAlgorithm extends TspAlgorithm
         	elapsedTime = System.nanoTime();
         	int nIter;
         	
-        	while (graph.size() < doublePoint.length * 3 / 2)
+        	while (graph.size() < nPoints * 3 / 2)
             {
-        		nIter = (int)(graph.size() * MAX_ITERATIONS / doublePoint.length);
+        		nIter = (int)(graph.size() * MAX_ITERATIONS / nPoints);
                 for(int i = 0; i < nIter; i++)
                 	updateSOM();
                 
@@ -115,13 +123,13 @@ public class SOMAlgorithm extends TspAlgorithm
         
         double cx = 0;
         double cy = 0;
-        for (int i = 0; i < doublePoint.length; i++)
+        for (int i = 0; i < nPoints; i++)
         {
             cx += doublePoint[i].x;
             cy += doublePoint[i].y;
         }
-        cx /= doublePoint.length;
-        cy /= doublePoint.length;
+        cx /= nPoints;
+        cy /= nPoints;
         
         // Search limit nodes
         DoublePoint nNorth = new DoublePoint(cx, cy * 0.8);
@@ -135,6 +143,10 @@ public class SOMAlgorithm extends TspAlgorithm
         graph.rightInsert(new Node(1, nEast), graph.get(0));
         graph.rightInsert(new Node(2, nSouth), graph.get(1));
         graph.rightInsert(new Node(3, nWest), graph.get(2));
+        
+        // Show SOM
+        if (display)
+        	paint();
     }
     
     // Method in charge of drawing. Use a separate thread to make the drawings
@@ -142,7 +154,7 @@ public class SOMAlgorithm extends TspAlgorithm
     {
     	if (env != null) {
 	        new PaintProcess(env.envCanvas, doublePoint, graph);
-	        try{ sleep(paintWait); } catch(Exception e) { System.out.println("   Error: " + e.getMessage()); }
+	        try { sleep(PAINT_WAIT); } catch(Exception e) { System.out.println(" - Error: " + e.getMessage()); }
     	}
     }
     
@@ -150,7 +162,7 @@ public class SOMAlgorithm extends TspAlgorithm
     private void updateSOM()
     {
         int winnerNode = -1;
-        int winnerIx = (int)(Math.random() * doublePoint.length);
+        int winnerIx = rnd.nextInt(nPoints);
         int upCache = searchCache(winnerIx);
         
         if (upCache != -1) {
@@ -222,7 +234,7 @@ public class SOMAlgorithm extends TspAlgorithm
         int key = 0;
         Node node = null;
         
-        for (int i = 0; i < doublePoint.length; i++)
+        for (int i = 0; i < nPoints; i++)
         {
             if (cache[i] != -1  && !graph.get(cache[i]).assigned) {
             	key = cache[i];

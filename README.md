@@ -30,24 +30,28 @@ NODE_COORD_SECTION
 ```
 
 # Results
-Below, the results for 10 different TSP files using the SOM algorithm implementation.
+Next, the results of 10 different TSP files using the SOM algorithm implementation. The results are calculated after executing and averaging the 10 cases 5 times.
 
 | TSP File | # Points | Best Tout | Curr Tour | MAPE (%) | Elapsed Time (ms) |
 | -- | -- | -- | -- | -- | -- |
-| XQF131  | 131  |  564.00 |  603.0747 | 6.9281  |    91 |
-| XQG237  | 237  | 1019.00 | 1098.7306 | 7.8244  |   281 |
-| PMA343  | 343  | 1368.00 | 1466.9586 | 7.2338  |   500 |
-| XQL662  | 662  | 2513.00 | 2874.2065 | 14.3735 |  1928 |
-| RBX711  | 711  | 3115.00 | 3466.4948 | 11.2839 |  2055 |
-| PBD984  | 984  | 2797.00 | 3125.5329 | 11.7459 |  4280 |
-| DKA1376 | 1376 | 4666.00 | 5310.5833 | 13.8145 |  8450 |
-| DJA1436 | 1436 | 5257.00 | 5907.1585 | 12.3675 |  9232 |
-| DJC1785 | 1785 | 6115.00 | 6908.7349 | 12.9801 | 14493 |
-| DCB2086 | 2086 | 6600.00 | 7516.3060 | 13.8834 | 21505 |
+| XQF131  | 131  |  564.00 | 607.8345  |  7.7721 |    73 |
+| XQG237  | 237  | 1019.00 | 1100.4472 |  7.9929 |   215 |
+| PMA343  | 343  | 1368.00 | 1448.5932 |  5.8913 |   442 |
+| XQL662  | 662  | 2513.00 | 2870.8841 | 14.2413 |  1736 |
+| RBX711  | 711  | 3115.00 | 3461.0800 | 11.1101 |  2044 |
+| PBD984  | 984  | 2797.00 | 3129.5691 | 11.8902 |  4204 |
+| DKA1376 | 1376 | 4666.00 | 5305.0492 | 13.6959 |  9393 |
+| DJA1436 | 1436 | 5257.00 | 5878.6449 | 11.8251 |  9276 |
+| DJC1785 | 1785 | 6115.00 | 6930.8129 | 13.3412 | 14230 |
+| DCB2086 | 2086 | 6600.00 | 7526.3571 | 14.0357 | 21605 |
 
-With a weighted average MAPE of: 12.5654 %.
+With a weighted average MAPE of: 12.6017 %. Below, the solution accuracy in one chart:
 
-![som-xqf131 solution](https://raw.githubusercontent.com/ansegura7/TSP/master/images/results1.PNG)
+![solution accuracy](https://raw.githubusercontent.com/ansegura7/TSP/master/images/results1.PNG)
+
+The time complexity of this solution is:
+
+![time complexity](https://raw.githubusercontent.com/ansegura7/TSP/master/images/results2.PNG)
 
 ## Program Execution Rules
 The project has an executable in the 'jar' folder.
