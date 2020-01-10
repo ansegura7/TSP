@@ -8,6 +8,7 @@
 
 package tsp.test;
 
+// Class that stores TSP case information
 public class TspCase {
 	
 	// Class variables
@@ -19,7 +20,7 @@ public class TspCase {
 	public int elapsedTime;
 	private double errorTour;
 	
-	// TspCase constructor
+	// TspCase class constructor
 	public TspCase(String name, String filePath, int nPoints, double bestTour) {
 		this.name = name;
 		this.filePath = filePath;

@@ -18,6 +18,7 @@ import tsp.algorithm.SOMAlgorithm;
 import tsp.util.DoublePoint;
 import tsp.util.FileManager;
 
+// GUI class of the solution
 @SuppressWarnings("serial")
 public class Environment extends javax.swing.JFrame
 {
@@ -48,7 +49,7 @@ public class Environment extends javax.swing.JFrame
     // Algorithms
     private TspAlgorithm tspAlgo;
     
-    // Creates new form Environment
+    // Creates new Environment GUI
     public Environment()
     {
         super("TSP Solver");

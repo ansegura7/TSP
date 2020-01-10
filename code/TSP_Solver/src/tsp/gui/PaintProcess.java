@@ -11,6 +11,7 @@ package tsp.gui;
 import tsp.util.DoubleLinkedList;
 import tsp.util.DoublePoint;
 
+// Threading class to painting/repainting the Environment Canvas
 public class PaintProcess extends Thread
 {
     private EnvCanvas envCanvas;
@@ -26,6 +27,7 @@ public class PaintProcess extends Thread
         start();
     }
     
+    // Definition of abstract method to executing the thread
     public void run()
     {
         envCanvas.paintGraph(doublePoint, graph);

@@ -23,6 +23,7 @@ import tsp.algorithm.TspAlgorithm;
 import tsp.util.DoublePoint;
 import tsp.util.FileManager;
 
+// Program Main Class of TSP Solver solution for test and calibration purpose
 public class TestEngine {
 
 	// Class variables
@@ -63,7 +64,7 @@ public class TestEngine {
 		System.out.println(">> End Batch Process - " + sdf.format(new Date()));
 	}
 	
-	// Batch process that calculates the TSP for each case
+	// Batch process that calculates the TSP solution for each case
 	private static void runBatchTest(String filesFolder, String algorithm, int nTest)
 	{
 		ArrayList<TspCase> tspFiles = readFileList(filesFolder);
@@ -172,7 +173,7 @@ public class TestEngine {
 		return tspFiles;
 	}
 	
-	// Save the TSP cases results to CSV file
+	// Save the TSP cases results into CSV file
 	private static void saveTestResultsToCSV(ArrayList<TspCase> tspFiles) {
 		String resultPath = "test/results.csv";
 		FileWriter writer = null;

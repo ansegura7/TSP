@@ -8,10 +8,12 @@
 
 package tsp.main;
 
+// Program Main Class of TSP Solver solution GUI
 public class Main {
     
     /** Creates a new instance of Main */
     public Main() {
+    	
     }
     
     /**

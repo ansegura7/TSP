@@ -16,6 +16,7 @@ import tsp.util.DoubleLinkedList;
 import tsp.util.DoublePoint;
 import tsp.util.Node;
 
+// Environment Canvas class
 @SuppressWarnings("serial")
 public class EnvCanvas extends Canvas
 {    
@@ -54,13 +55,23 @@ public class EnvCanvas extends Canvas
         hMargin = (w - pFactor) / 2;
     }
     
+    // Definition of paint abstract method
     public void paint(Graphics g)
     {
         this.g = g;
-        paintCanvas();
+        updateCanvas();
     }
     
-    public synchronized void paintCanvas()
+    // Function that repaints (update) the graph
+    public void paintGraph(DoublePoint[] dblPoints, DoubleLinkedList graph)
+    {
+        this.doublePoint = dblPoints;
+        this.graph = graph;
+        repaint();
+    }
+    
+    // Function that updates the canvas objects: points and graph
+    public synchronized void updateCanvas()
     {
     	int xv = 0, yv = 0;
     	int xn = 0, yn = 0;
@@ -97,14 +108,6 @@ public class EnvCanvas extends Canvas
             while (node != graph.getLast());
         }
         
-    }
-    
-    // re-paint graph
-    public void paintGraph(DoublePoint[] dblPoints, DoubleLinkedList graph)
-    {
-        this.doublePoint = dblPoints;
-        this.graph = graph;
-        repaint();
     }
     
 }

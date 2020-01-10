@@ -14,7 +14,7 @@ import java.io.IOException;
 
 import javax.swing.JFileChooser;
 
-// Class that manages TSP files 
+// Class that manages TSP files
 public class FileManager
 {
     // Class constants
@@ -164,7 +164,7 @@ public class FileManager
         return this.doublePoint;
     }
     
-    // Returns the max value of data
+    // Returns the scaling factor of the data
     public double getFactorValue()
     {
     	return this.factorValue;

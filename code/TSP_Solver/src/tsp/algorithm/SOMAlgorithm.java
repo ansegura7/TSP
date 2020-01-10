@@ -54,7 +54,7 @@ public class SOMAlgorithm extends TspAlgorithm
         this.elapsedTime = 0l;
     }
     
-    // Function based on the initial cloud of points established by the initial SOM
+    // Function based on the point cloud, sets the initial SOM
     public void init(DoublePoint[] points)
     {
         doublePoint = points;
@@ -295,7 +295,7 @@ public class SOMAlgorithm extends TspAlgorithm
         return up;
     }
 
-    // This method brings the winning node and its neighbors closer to the stimulus.
+    // This method brings the winning node and its neighbors closer to the stimulus
     private void closeupPhase(int n, int ix)
     {
         Node node = graph.get(n);

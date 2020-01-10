@@ -10,6 +10,7 @@ package tsp.algorithm;
 
 import tsp.util.DoublePoint;
 
+// Abstract class for TSP algorithm classes
 public abstract class TspAlgorithm extends Thread {
 	
     // Super run method that solves the algorithm
