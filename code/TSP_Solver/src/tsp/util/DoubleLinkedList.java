@@ -65,8 +65,8 @@ public class DoubleLinkedList
             n.next = p.next;
             p.next = n;
             n.previous = p;
-            nNodes++;
 		}
+        nNodes++;
     }
     
     // Insert a node to the left of node p
@@ -81,8 +81,8 @@ public class DoubleLinkedList
             n.previous = p.previous;
             p.previous = n;
             n.next = p;
-            nNodes++;
         }
+        nNodes++;
     }
     
     // Delete a node from the list

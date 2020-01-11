@@ -54,7 +54,6 @@ File class: **SOMAlgorithm.java**
     - **addNodes**: Method of the network nodes insertion.
     - **finish**: This method ends the TSP. Check which stimuli need a new node.
     - **removeIsolatedNodes**: Method that eliminate isolated nodes.
-    - **searchCache**: This method searches the cache for a stimulus.
     - **closeupPhase**: This method brings the winning node and its neighbors closer to the stimulus.
     - **getEuclideanDistance**: Returns the Euclidean distance between 2 points in the plane (overload).
 

@@ -8,6 +8,7 @@
 
 package tsp.algorithm;
 
+import java.util.Hashtable;
 import java.util.Random;
 
 import tsp.gui.Environment;
@@ -29,10 +30,10 @@ public class SOMAlgorithm extends TspAlgorithm
     private DoublePoint[] doublePoint;
     private DoubleLinkedList graph;
     private int nPoints; 
-    private Random rnd =	new Random();
+    private Random rnd = new Random();
     
     // Other variables
-    private int[] cache;
+    private Hashtable<Integer, Integer> cache;
     private boolean display;
     private long elapsedTime;
     
@@ -59,8 +60,7 @@ public class SOMAlgorithm extends TspAlgorithm
     {
         doublePoint = points;
         nPoints = points.length;
-        cache = new int[nPoints];
-        java.util.Arrays.fill(cache, -1);
+        cache = new Hashtable<Integer, Integer>();
         
         setInitialPoints();
     }
@@ -70,12 +70,12 @@ public class SOMAlgorithm extends TspAlgorithm
     {
         if (doublePoint != null) {
         	elapsedTime = System.nanoTime();
-        	int nIter;
         	
-        	while (graph.size() < nPoints * 3 / 2)
+        	int nIter;
+        	while (graph.size() < nPoints * 2)
             {
         		nIter = (int)(graph.size() * MAX_ITERATIONS / nPoints);
-                for(int i = 0; i < nIter; i++)
+                for (int i = 0; i < nIter; i++)
                 	updateSOM();
                 
                 addNodes();
@@ -162,11 +162,11 @@ public class SOMAlgorithm extends TspAlgorithm
     private void updateSOM()
     {
         int winnerNode = -1;
-        int winnerIx = rnd.nextInt(nPoints);
-        int upCache = searchCache(winnerIx);
+        int targetNode = rnd.nextInt(nPoints);
         
-        if (upCache != -1) {
-        	winnerNode = upCache;
+        if (cache.containsKey(targetNode)) {
+        	winnerNode = cache.get(targetNode);
+        	cache.remove(targetNode);
         }
         else
         {
@@ -177,7 +177,7 @@ public class SOMAlgorithm extends TspAlgorithm
             // Search for the node closest to that impulse
             do
             {
-            	localDist = getEuclideanDistance(doublePoint[winnerIx], node);
+            	localDist = getEuclideanDistance(doublePoint[targetNode], node);
                 if (localDist < winnerDist)
                 {
                 	winnerDist = localDist;  
@@ -186,43 +186,44 @@ public class SOMAlgorithm extends TspAlgorithm
                 node = node.next;
             }
             while (node != graph.getLast());
-            cache[winnerIx] = winnerNode;
+            
+            cache.put(targetNode, winnerNode);
         }
         
         // Move the winning node and give it its prize
         graph.get(winnerNode).victories++;
-        closeupPhase(winnerNode, winnerIx);
+        closeupPhase(winnerNode, targetNode);
     }
     
     // Method of the network nodes insertion
     private void addNodes()
     {   
-        Node ini = graph.getLast();
-        Node node = null;
-        int vicGanadora = 0;
+    	Node winner = null;
+        Node node = graph.getLast();
+        int maxVictories = 0;
         
         do
         {
-            if (ini.victories > vicGanadora)
+            if (node.victories > maxVictories)
             {
-                vicGanadora = ini.victories;
-                node = ini;
+            	maxVictories = node.victories;
+                winner = node;
             }
-            ini = ini.next;
+            node = node.next;
         }
-        while (ini != graph.getLast());
+        while (node != graph.getLast());
         
-        node.victories = 0;
+        winner.victories = 0;
         
         // A new node is inserted to the right
-        double x = (node.x + node.next.x) / 2;
-        double y = (node.y + node.next.y) / 2;
-        graph.rightInsert(new Node(graph.size()+1, 0, x, y), node);
+        double x = (winner.x + winner.next.x) / 2;
+        double y = (winner.y + winner.next.y) / 2;
+        graph.rightInsert(new Node(graph.size(), 0, x, y), winner);
         
         // A new node is inserted to the left
-        x = (node.x + node.previous.x) / 2;
-        y = (node.y + node.previous.y) / 2;
-        graph.leftInsert(new Node(graph.size()+1, 0, x, y), node);
+        x = (winner.x + winner.previous.x) / 2;
+        y = (winner.y + winner.previous.y) / 2;
+        graph.leftInsert(new Node(graph.size(), 0, x, y), winner);
     }
     
     // This method ends the TSP. Check which stimuli need a new node
@@ -236,8 +237,8 @@ public class SOMAlgorithm extends TspAlgorithm
         
         for (int i = 0; i < nPoints; i++)
         {
-            if (cache[i] != -1  && !graph.get(cache[i]).assigned) {
-            	key = cache[i];
+            if (cache.containsKey(i) && !graph.get(cache.get(i)).assigned) {
+            	key = cache.get(i);
             }
             else
             {
@@ -261,10 +262,12 @@ public class SOMAlgorithm extends TspAlgorithm
             
             // Update
             node = graph.get(key);
-            node.assigned = true;
             node.x = doublePoint[i].x;
             node.y = doublePoint[i].y;
+            node.assigned = true;
         }
+        
+        // Finally, remove isolated nodes from the graph
         removeIsolatedNodes();
     }
     
@@ -284,21 +287,11 @@ public class SOMAlgorithm extends TspAlgorithm
         }
         
     }
-    
-    // This method searches the cache for a stimulus
-    private int searchCache(int stimulus)
-    {
-    	int up = cache[stimulus];
-        if (cache[stimulus] != -1)
-        	cache[stimulus] = -1; 
-        
-        return up;
-    }
 
     // This method brings the winning node and its neighbors closer to the stimulus
-    private void closeupPhase(int n, int ix)
+    private void closeupPhase(int key, int ix)
     {
-        Node node = graph.get(n);
+        Node node = graph.get(key);
         
         // Update target node position
         node.x += LAMBDA * (doublePoint[ix].x - node.x);
