@@ -54,13 +54,13 @@ And the time complexity of the solution is:
 ![time complexity](https://raw.githubusercontent.com/ansegura7/TSP/master/images/results2.PNG)
 
 ## Program Execution Rules
-The project has an executable in the 'jar' folder.
+The project has an executable file in the 'jar' folder.
 
 Execution example:
 ``` console
-    java -jar TSP_Solver-v0.9.jar
+    java -jar TSP_Solver-v0.5.jar
 ```
-The .JAR program must be run with Java 7 or higher.
+The .JAR program must be run with Java 8 or higher.
 
 ## Contributing and Feedback
 Any kind of feedback/criticism would be greatly appreciated (algorithm design, documentation, improvement ideas, spelling mistakes, etc...).
