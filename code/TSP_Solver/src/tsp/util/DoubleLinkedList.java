@@ -8,18 +8,20 @@
 
 package tsp.util;
 
+import java.util.Hashtable;
+
 // Double Linked List class
 public class DoubleLinkedList
 {
     // Class variables
     private Node lastNode;
-    private int nNodes;
+    private Hashtable<Integer, Node> nodes;
 	
     // Class constructor
     public DoubleLinkedList()
     {
     	lastNode = null;
-        nNodes = 0;
+    	nodes = new Hashtable<Integer, Node>();
     }
     
     // Returns if the list is empty or not
@@ -31,7 +33,7 @@ public class DoubleLinkedList
     // Returns the number of nodes in the list
     public int size()
     {
-        return nNodes;
+        return nodes.size();
     }
     
     // Returns the last selected node
@@ -43,12 +45,8 @@ public class DoubleLinkedList
     // Search for a node from its key name
     public Node get(int key)
     {
-		Node n = getLast();
-		while (n.next != lastNode && n.keyName != key)
-			n = n.next;
-		
-		if (n.keyName == key)
-            return n;
+    	if (nodes.containsKey(key))
+    		return nodes.get(key);
 		
 		return null;
     }
@@ -66,7 +64,7 @@ public class DoubleLinkedList
             p.next = n;
             n.previous = p;
 		}
-        nNodes++;
+        nodes.put(n.keyName, n);
     }
     
     // Insert a node to the left of node p
@@ -82,7 +80,7 @@ public class DoubleLinkedList
             p.previous = n;
             n.next = p;
         }
-        nNodes++;
+        nodes.put(n.keyName, n);
     }
     
     // Delete a node from the list
@@ -91,9 +89,9 @@ public class DoubleLinkedList
         if (node == lastNode)
             lastNode = node.next;
         
+        nodes.remove(node.keyName);
         node.previous.next = node.next;
         node.next.previous = node.previous;
         node = null;
-        nNodes--;
     }
 }

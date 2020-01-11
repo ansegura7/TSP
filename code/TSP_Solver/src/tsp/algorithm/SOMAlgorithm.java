@@ -199,8 +199,8 @@ public class SOMAlgorithm extends TspAlgorithm
     private void addNodes()
     {   
     	Node winner = null;
-        Node node = graph.getLast();
-        int maxVictories = 0;
+    	Node node = graph.getLast();
+    	int maxVictories = 0;
         
         do
         {
