@@ -34,18 +34,18 @@ Next, the results of 10 different TSP files using the SOM algorithm implementati
 
 | TSP File | # Points | Best Tout | Curr Tour | MAPE (%) | Elapsed Time (ms) |
 | -- | -- | -- | -- | -- | -- |
-| XQF131  | 131  |  564.00 | 608.8120  | 7.9454  |   146 |
-| XQG237  | 237  | 1019.00 | 1092.1591 | 7.1795  |   387 |
-| PMA343  | 343  | 1368.00 | 1451.8500 | 6.1294  |   726 |
-| XQL662  | 662  | 2513.00 | 2862.8253 | 13.9206 |  2411 |
-| RBX711  | 711  | 3115.00 | 3444.4560 | 10.5764 |  2788 |
-| PBD984  | 984  | 2797.00 | 3126.9053 | 11.7950 |  5264 |
-| DKA1376 | 1376 | 4666.00 | 5267.2621 | 12.8860 |  9926 |
-| DJA1436 | 1436 | 5257.00 | 5846.3651 | 11.2111 | 10834 |
-| DJC1785 | 1785 | 6115.00 | 6895.1806 | 12.7585 | 17214 |
-| DCB2086 | 2086 | 6600.00 | 7444.1573 | 12.7903 | 24017 |
+| XQF131  |  131 |  564 |   598.915 |  6.1906 |   245 | 
+| XQG237  |  237 | 1019 | 1108.2272 |  8.7563 |   714 | 
+| PMA343  |  343 | 1368 | 1464.7101 |  7.0695 |  1571 | 
+| XQL662  |  662 | 2513 | 2804.3936 | 11.5954 |  4941 | 
+| RBX711  |  711 | 3115 | 3428.1617 | 10.0533 |  5806 | 
+| PBD984  |  984 | 2797 | 3102.7567 | 10.9316 | 10225 | 
+| DKA1376 | 1376 | 4666 | 5242.9936 | 12.3659 | 19565 | 
+| DJA1436 | 1436 | 5257 | 5855.2285 | 11.3797 | 21390 | 
+| DJC1785 | 1785 | 6115 | 6864.0603 | 12.2496 | 32591 | 
+| DCB2086 | 2086 | 6600 | 7452.5379 | 12.9172 | 44726 | 
 
-With a weighted average MAPE of 11.9445 %. Below, the solution accuracy in one chart:
+With a weighted average MAPE of 11.5946 %. Below, the solution accuracy in one chart:
 
 ![solution accuracy](https://raw.githubusercontent.com/ansegura7/TSP/master/images/results1.PNG)
 
@@ -54,13 +54,14 @@ And the time complexity of the solution is:
 ![time complexity](https://raw.githubusercontent.com/ansegura7/TSP/master/images/results2.PNG)
 
 ## Program Execution Rules
-The project has an executable file in the 'jar' folder.
+The repository has an executable file in the **jar** folder. The .JAR program must be run with Java 8 or higher.
 
 Execution example:
 ``` console
     java -jar TSP_Solver-v0.5.jar
 ```
-The .JAR program must be run with Java 8 or higher.
+
+The project was developed in the Eclipse IDE, and is located in the **code** folder.
 
 ## Contributing and Feedback
 Any kind of feedback/criticism would be greatly appreciated (algorithm design, documentation, improvement ideas, spelling mistakes, etc...).

@@ -8,7 +8,6 @@
 
 package tsp.algorithm;
 
-import java.util.Hashtable;
 import java.util.Random;
 
 import tsp.gui.Environment;
@@ -33,7 +32,6 @@ public class SOMAlgorithm extends TspAlgorithm
     private Random rnd = new Random();
     
     // Other variables
-    private Hashtable<Integer, Integer> cache;
     private boolean display;
     private long elapsedTime;
     
@@ -50,7 +48,6 @@ public class SOMAlgorithm extends TspAlgorithm
         this.doublePoint = null;
         this.graph = null;
         this.nPoints = 0;        
-        this.cache = null;
         this.display = b;
         this.elapsedTime = 0l;
     }
@@ -60,7 +57,6 @@ public class SOMAlgorithm extends TspAlgorithm
     {
         doublePoint = points;
         nPoints = points.length;
-        cache = new Hashtable<Integer, Integer>();
         
         setInitialPoints();
     }
@@ -164,31 +160,22 @@ public class SOMAlgorithm extends TspAlgorithm
     	int winnerNode = -1;
     	int targetNode = rnd.nextInt(nPoints);
     	
-    	if (cache.containsKey(targetNode)) {
-    		winnerNode = cache.get(targetNode);
-    		cache.remove(targetNode);
-    	}
-    	else
-    	{
-    		double winnerDist = Double.MAX_VALUE;
-    		double localDist = 0.0d;
-    		Node node = graph.getLast();
-    		
-    		// Search for the node closest to that impulse
-    		do
-    		{
-    			localDist = getEuclideanDistance(doublePoint[targetNode], node);
-    			if (localDist < winnerDist)
-    			{
-    				winnerDist = localDist;
-    				winnerNode = node.keyName;
-    			}
-    			node = node.next;
-    		}
-    		while (node != graph.getLast());
-    		
-    		cache.put(targetNode, winnerNode);
-    	}
+		double winnerDist = Double.MAX_VALUE;
+		double localDist = 0.0d;
+		Node node = graph.getLast();
+		
+		// Search for the node closest to that impulse
+		do
+		{
+			localDist = getEuclideanDistance(doublePoint[targetNode], node);
+			if (localDist < winnerDist)
+			{
+				winnerDist = localDist;
+				winnerNode = node.keyName;
+			}
+			node = node.next;
+		}
+		while (node != graph.getLast());
     	
     	// Move the winning node and give it its prize
     	graph.get(winnerNode).victories++;
@@ -237,28 +224,22 @@ public class SOMAlgorithm extends TspAlgorithm
     	
     	for (int i = 0; i < nPoints; i++)
     	{
-    		if (cache.containsKey(i) && !graph.get(cache.get(i)).assigned) {
-    			key = cache.get(i);
-    		}
-    		else
-    		{
-    			node = graph.getLast();
-    			distUP = Double.MAX_VALUE;
-    			do
-    			{
-    				if (!node.assigned)
-    				{
-    					dist = getEuclideanDistance(doublePoint[i], node);
-    					if (dist < distUP)
-    					{
-    						distUP = dist;
-    						key = node.keyName;
-    					}
-    				}
-    				node = node.next;
-    			}
-    			while (node != graph.getLast());
-    		}
+			node = graph.getLast();
+			distUP = Double.MAX_VALUE;
+			do
+			{
+				if (!node.assigned)
+				{
+					dist = getEuclideanDistance(doublePoint[i], node);
+					if (dist < distUP)
+					{
+						distUP = dist;
+						key = node.keyName;
+					}
+				}
+				node = node.next;
+			}
+			while (node != graph.getLast());
     		
     		// Update
     		node = graph.get(key);

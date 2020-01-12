@@ -1,0 +1,74 @@
+>> Start Batch Process - 01/12/2020 10:47:25.0005 AM
+   Directory: /TSP/data/, Algorithm: SOM, N Tests: 5
+ - The file will be processed: XQF131 by SOM algorithm - 01/12/2020 10:47:25.0012 AM
+   Start reading file
+   Name: xqf131
+   Dimension: 131
+   Limits - vMin:0.0, vMax: 107.0, yMin: , factorValue: 107.0
+   Data scaled successfully
+   Algorithm results: Tour length: 598.9149552014593 units, Tour MAE: 0.06190594893875761, Elapsed time: 245 ms
+ - The file will be processed: XQG237 by SOM algorithm - 01/12/2020 10:47:25.0772 AM
+   Start reading file
+   Name: xqg237
+   Dimension: 237
+   Limits - vMin:0.0, vMax: 132.0, yMin: , factorValue: 132.0
+   Data scaled successfully
+   Algorithm results: Tour length: 1108.2272042027946 units, Tour MAE: 0.08756349774562769, Elapsed time: 714 ms
+ - The file will be processed: PMA343 by SOM algorithm - 01/12/2020 10:47:27.0933 AM
+   Start reading file
+   Name: pma343
+   Dimension: 343
+   Limits - vMin:0.0, vMax: 299.0, yMin: , factorValue: 299.0
+   Data scaled successfully
+   Algorithm results: Tour length: 1464.7101242499164 units, Tour MAE: 0.0706945352704067, Elapsed time: 1571 ms
+ - The file will be processed: XQL662 by SOM algorithm - 01/12/2020 10:47:32.0659 AM
+   Start reading file
+   Name: xql662
+   Dimension: 662
+   Limits - vMin:0.0, vMax: 227.0, yMin: , factorValue: 227.0
+   Data scaled successfully
+   Algorithm results: Tour length: 2804.3935567135486 units, Tour MAE: 0.11595445949604004, Elapsed time: 4941 ms
+ - The file will be processed: RBX711 by SOM algorithm - 01/12/2020 10:47:47.0496 AM
+   Start reading file
+   Name: rbx711
+   Dimension: 711
+   Limits - vMin:0.0, vMax: 185.0, yMin: , factorValue: 185.0
+   Data scaled successfully
+   Algorithm results: Tour length: 3428.161727600194 units, Tour MAE: 0.10053345990375406, Elapsed time: 5806 ms
+ - The file will be processed: PBD984 by SOM algorithm - 01/12/2020 10:48:04.0923 AM
+   Start reading file
+   Name: pbd984
+   Dimension: 984
+   Limits - vMin:0.0, vMax: 143.0, yMin: , factorValue: 143.0
+   Data scaled successfully
+   Algorithm results: Tour length: 3102.756670007011 units, Tour MAE: 0.10931593493278907, Elapsed time: 10225 ms
+ - The file will be processed: DKA1376 by SOM algorithm - 01/12/2020 10:48:35.0609 AM
+   Start reading file
+   Name: dka1376
+   Dimension: 1376
+   Limits - vMin:0.0, vMax: 258.0, yMin: , factorValue: 258.0
+   Data scaled successfully
+   Algorithm results: Tour length: 5242.993572025015 units, Tour MAE: 0.12365914531183349, Elapsed time: 19565 ms
+ - The file will be processed: DJA1436 by SOM algorithm - 01/12/2020 10:49:34.0316 AM
+   Start reading file
+   Name: dja1436
+   Dimension: 1436
+   Limits - vMin:0.0, vMax: 349.0, yMin: , factorValue: 349.0
+   Data scaled successfully
+   Algorithm results: Tour length: 5855.228541650432 units, Tour MAE: 0.11379656489450864, Elapsed time: 21390 ms
+ - The file will be processed: DJC1785 by SOM algorithm - 01/12/2020 10:50:38.0500 AM
+   Start reading file
+   Name: djc1785
+   Dimension: 1785
+   Limits - vMin:0.0, vMax: 249.0, yMin: , factorValue: 249.0
+   Data scaled successfully
+   Algorithm results: Tour length: 6864.060267364778 units, Tour MAE: 0.12249554658459169, Elapsed time: 32591 ms
+ - The file will be processed: DCB2086 by SOM algorithm - 01/12/2020 10:52:16.0285 AM
+   Start reading file
+   Name: dcb2086
+   Dimension: 2086
+   Limits - vMin:0.0, vMax: 246.0, yMin: , factorValue: 246.0
+   Data scaled successfully
+   Algorithm results: Tour length: 7452.5379196002505 units, Tour MAE: 0.129172412060644, Elapsed time: 44726 ms
+ - The weighted average MAPE: 11.59464187648292
+>> End Batch Process - 01/12/2020 10:54:30.0483 AM
