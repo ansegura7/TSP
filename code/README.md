@@ -38,6 +38,7 @@ File class: **TspAlgorithm.java**
     - **solve**: Abstract methods declaration.
     - **getTourLength**: Abstract methods declaration.
     - **getElapsedTime**: Abstract methods declaration.
+    - **getSolution**: Abstract methods declaration.
 
 File class: **SOMAlgorithm.java**
 - Description: Self organizing map (SOM) class. Inherited from TspAlgorithm class.
@@ -48,6 +49,7 @@ File class: **SOMAlgorithm.java**
     - **solve**: This is the method that solves the TSP problem using SOM algorithm.
     - **getTourLength**: Method that calculates the length of the tour.
     - **getElapsedTime**: Returns the time it took for the algorithm to resolve the TSP.
+    - **getSolution**: Return the final TSP solution.
     - **setInitialPoints**: Method that looks for the initial position of the SOM.
     - **paint**: Method in charge of drawing. Use a separate thread to make the drawings.
     - **updateSOM**: Method that update the SOM.

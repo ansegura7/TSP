@@ -111,6 +111,12 @@ public class SOMAlgorithm extends TspAlgorithm
     	return (int)this.elapsedTime;
     }
     
+    // Return the final TSP solution
+    public DoubleLinkedList getSolution()
+    {
+    	return this.graph;
+    }
+    
     // Method that looks for the initial position of the SOM
     private void setInitialPoints()
     {

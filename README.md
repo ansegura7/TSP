@@ -32,7 +32,7 @@ NODE_COORD_SECTION
 # Results
 Next, the results of 10 different TSP files using the SOM algorithm implementation. The results are calculated after executing and averaging the 10 cases 5 times.
 
-| TSP File | # Points | Best Tout | Curr Tour | MAPE (%) | Elapsed Time (ms) |
+| TSP File | # Points | Optimal Tour | Curr Tour | MAPE (%) | Elapsed Time (ms) |
 | -- | -- | -- | -- | -- | -- |
 | XQF131  |  131 |  564 |   598.915 |  6.1906 |   245 | 
 | XQG237  |  237 | 1019 | 1108.2272 |  8.7563 |   714 | 

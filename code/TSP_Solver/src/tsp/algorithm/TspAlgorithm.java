@@ -8,6 +8,7 @@
 
 package tsp.algorithm;
 
+import tsp.util.DoubleLinkedList;
 import tsp.util.DoublePoint;
 
 // Abstract class for TSP algorithm classes
@@ -24,5 +25,6 @@ public abstract class TspAlgorithm extends Thread {
     public abstract void solve();
     public abstract double getTourLength();
     public abstract int getElapsedTime();
+    public abstract DoubleLinkedList getSolution();
     
 }

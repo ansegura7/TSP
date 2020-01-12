@@ -15,8 +15,10 @@ import java.text.DecimalFormat;
 
 import tsp.algorithm.TspAlgorithm;
 import tsp.algorithm.SOMAlgorithm;
+import tsp.util.DoubleLinkedList;
 import tsp.util.DoublePoint;
 import tsp.util.FileManager;
+import tsp.util.Node;
 
 // GUI class of the solution
 @SuppressWarnings("serial")
@@ -36,6 +38,8 @@ public class Environment extends javax.swing.JFrame
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JScrollPane jScrollPane1; 
     public EnvCanvas envCanvas;
     
     // Main Class variables
@@ -66,7 +70,7 @@ public class Environment extends javax.swing.JFrame
         fm = new FileManager();
         doublePoint = null;
         tspAlgo = null;
-        df = new DecimalFormat("##.00");
+        df = new DecimalFormat("0.00");
     }
     
     // Method to Initialize the graphic components
@@ -86,20 +90,30 @@ public class Environment extends javax.swing.JFrame
         jLabel5 = new javax.swing.JLabel("Animation:");
         jLabel6 = new javax.swing.JLabel("Load TSP file");
         jCheckBox1 = new javax.swing.JCheckBox();
+        jTextArea1 = new javax.swing.JTextArea();
+        jScrollPane1 = new javax.swing.JScrollPane(jTextArea1);
         
-        // Initialize panel2
+        // Initialize panel1
      	jPanel1.setBounds(6, 0, w-227, h-35);
      	jPanel1.setBackground(Color.white);
-     	jPanel1.setLayout(null);	
+     	jPanel1.setLayout(null);
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "TSP", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11),new java.awt.Color(0, 70, 213)));
         add(jPanel1);
         
         // Initialize panel2
 		jPanel2.setBounds(w-220, 0, 208, 280);
 		jPanel2.setBackground(Color.white);
-		jPanel2.setLayout(null);	
+		jPanel2.setLayout(null);
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "ACTIONS", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11),new java.awt.Color(0, 70, 213)));
         add(jPanel2);
+        
+        // Initialize scrollPane
+        jScrollPane1.setBounds(w-220, 290, 208, h-325);
+        jScrollPane1.setBackground(Color.white);
+        jPanel1.setLayout(null);
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "SOLUTION", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11),new java.awt.Color(0, 70, 213)));
+        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        add(jScrollPane1);
         
         // Initialize canvas
         envCanvas = new EnvCanvas(3, 11, w-236, h-51);
@@ -212,6 +226,7 @@ public class Environment extends javax.swing.JFrame
             jLabel2.setText("Elapsed time: ");
             jLabel3.setText("TSP tour length: ");
             jLabel4.setText("Number of points: ");
+            jTextArea1.setText("");
             System.out.println("   Ploted " + doublePoint.length + " points");
         }
     }
@@ -227,6 +242,7 @@ public class Environment extends javax.swing.JFrame
             jLabel2.setText("Elapsed time: ");
             jLabel3.setText("TSP tour length: ");
             jLabel4.setText("Number of points: ");
+            jTextArea1.setText("");
             
         	// Set data and start algorithm
         	tspAlgo.init(doublePoint);
@@ -248,10 +264,22 @@ public class Environment extends javax.swing.JFrame
     {
     	long elapsedTime = tspAlgo.getElapsedTime();
     	double tourLength = tspAlgo.getTourLength() * fm.getFactorValue();
+    	DoubleLinkedList solution = tspAlgo.getSolution();
     	
+    	// Solution KPIs
         jLabel2.setText("Elapsed time: " + elapsedTime + " ms");
         jLabel3.setText("TSP tour length: " + df.format(tourLength) + " units");
         jLabel4.setText("Number of points: " + doublePoint.length);
         System.out.println("   Algorithm results: Tour length: " + tourLength + " units, Elapsed time: " + tspAlgo.getElapsedTime() + " ms");
+
+    	// Solution Tour
+        StringBuilder sb = new StringBuilder();
+        Node n = solution.getLast();
+        do {
+        	sb.append(" Node " + n.keyName + "\t x: " + df.format(n.x) + ", y: " + df.format(n.y) + "\n");
+        	n = n.next;
+        }
+        while (n != solution.getLast());
+        jTextArea1.setText(sb.toString());
     }
 }
