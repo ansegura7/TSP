@@ -239,6 +239,7 @@ public class Environment extends javax.swing.JFrame
         	if (jCombo1.getSelectedIndex() == 0) {
         		tspAlgo = new SOMAlgorithm(this, jCheckBox1.isSelected());
         	}
+        	jButton2.setEnabled(false);
             jLabel2.setText("Elapsed time: ");
             jLabel3.setText("TSP tour length: ");
             jLabel4.setText("Number of points: ");
@@ -265,6 +266,7 @@ public class Environment extends javax.swing.JFrame
     	long elapsedTime = tspAlgo.getElapsedTime();
     	double tourLength = tspAlgo.getTourLength() * fm.getFactorValue();
     	DoubleLinkedList solution = tspAlgo.getSolution();
+    	jButton2.setEnabled(true);
     	
     	// Solution KPIs
         jLabel2.setText("Elapsed time: " + elapsedTime + " ms");

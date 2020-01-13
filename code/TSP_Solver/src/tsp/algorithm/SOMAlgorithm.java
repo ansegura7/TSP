@@ -193,7 +193,7 @@ public class SOMAlgorithm extends TspAlgorithm
     {
     	Node winner = null;
     	Node node = graph.getLast();
-    	int maxVictories = 0;
+    	int maxVictories = -1;
     	
     	do
     	{
@@ -206,17 +206,20 @@ public class SOMAlgorithm extends TspAlgorithm
     	}
     	while (node != graph.getLast());
     	
-    	winner.victories = 0;
-    	
-    	// A new node is inserted to the right
-    	double x = (winner.x + winner.next.x) / 2;
-    	double y = (winner.y + winner.next.y) / 2;
-    	graph.rightInsert(new Node(graph.size(), 0, x, y), winner);
-    	
-    	// A new node is inserted to the left
-    	x = (winner.x + winner.previous.x) / 2;
-    	y = (winner.y + winner.previous.y) / 2;
-    	graph.leftInsert(new Node(graph.size(), 0, x, y), winner);
+    	// Add neighbors to winner node  
+    	if (winner != null) {
+    		winner.victories = 0;
+        	
+        	// A new node is inserted to the right
+        	double x = (winner.x + winner.next.x) / 2;
+        	double y = (winner.y + winner.next.y) / 2;
+        	graph.rightInsert(new Node(graph.size(), 0, x, y), winner);
+        	
+        	// A new node is inserted to the left
+        	x = (winner.x + winner.previous.x) / 2;
+        	y = (winner.y + winner.previous.y) / 2;
+        	graph.leftInsert(new Node(graph.size(), 0, x, y), winner);
+    	}
     }
     
     // This method ends the TSP. Check which stimuli need a new node

@@ -60,6 +60,7 @@ The program can be run in 2 modes: GUI or TESTS. Below, some examples of how to 
 
 **GUI mode example:** java -jar TSP_Solver-vX param-mode
 ``` console
+    java -jar TSP_Solver-v0.6.jar
     java -jar TSP_Solver-v0.6.jar GUI
 ```
 
