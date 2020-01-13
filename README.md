@@ -56,9 +56,19 @@ And the time complexity of the solution is:
 ## Program Execution Rules
 The repository has an executable file in the **jar** folder. The .JAR program must be run with Java 8 or higher.
 
-Execution example:
+The program can be run in 2 modes: GUI or TESTS. Below, some examples of how to call the program in each mode.
+
+**GUI mode example:** java -jar TSP_Solver-vX param-mode
 ``` console
-    java -jar TSP_Solver-v0.5.jar
+    java -jar TSP_Solver-v0.6.jar GUI
+```
+
+**Tests mode example:** java -jar TSP_Solver-vX param-mode param-directory param-algorithm param-number-tests
+``` console
+    java -jar TSP_Solver-v0.6.jar TESTS
+    java -jar TSP_Solver-v0.6.jar TESTS Project/TSP/ SOM
+    java -jar TSP_Solver-v0.6.jar TESTS Project/TSP/ SOM
+    java -jar TSP_Solver-v0.6.jar TESTS Project/TSP/ SOM 5
 ```
 
 The project was developed in the Eclipse IDE, and is located in the **code** folder.

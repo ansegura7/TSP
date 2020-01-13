@@ -17,7 +17,7 @@ File class: **TestEngine.java**
 - Description: Program Main Class of TSP Solver solution for test and calibration purpose.
 - Package: tsp.test
 - Main methods:
-    - **main**: Input function of the main class.
+    - **runAccuracyTests**: Public function to run the accuracy tests in batch mode.
     - **runBatchTest**: Function that runs the batch process to calculate the TSP for each case.
     - **readFileList**: Read the TSP file list.
     - **readFileList**: Save the TSP cases results into CSV file.

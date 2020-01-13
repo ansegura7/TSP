@@ -29,110 +29,97 @@ public class TestEngine {
 	// Class variables
 	private static SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss.SSSS a");
 	private static FileManager fm = new FileManager();
-	private static DecimalFormat df = new DecimalFormat("##.0000");
+	private static DecimalFormat df = new DecimalFormat("0.0000");
 	
 	/** Creates a new instance of Main */
     public TestEngine() {
     	
     }
-	
-    /**
-     * @param args the command line arguments
-     */
-	public static void main(String[] args) {
+    
+    // Public function to run the accuracy tests in batch mode
+	public static void runAccuracyTests(String directory, String algorithm, int nTest) {
 		System.out.println(">> Start Batch Process - " + sdf.format(new Date()));
 		
-		if (args.length > 0) {
-			// Batch engine variables
-			String filesFolder = args[0];
-			String algorithm = "SOM";
-			int nTest = 5;
-			
-			if (args.length > 1) {
-				algorithm = args[1];
-				
-				if (args.length > 2) {
-					nTest = Integer.parseInt(args[2]);
-				}
-			}
-			
-			// Run Test Engine in Batch mode
-			System.out.println("   Directory: " + filesFolder + ", Algorithm: " + algorithm + ", N Tests: " + nTest);
-			runBatchTest(filesFolder, algorithm, nTest);
-		}
+		// Run Test Engine in Batch mode
+		System.out.println("   Directory: " + directory + ", Algorithm: " + algorithm + ", N Tests: " + nTest);
+		runBatchTest(directory, algorithm, nTest);
 		
 		System.out.println(">> End Batch Process - " + sdf.format(new Date()));
 	}
 	
 	// Batch process that calculates the TSP solution for each case
-	private static void runBatchTest(String filesFolder, String algorithm, int nTest)
+	private static void runBatchTest(String directory, String algorithm, int nTest)
 	{
-		ArrayList<TspCase> tspFiles = readFileList(filesFolder);
-		TspCase tspCase = null;
-		TspAlgorithm tspAlgo = null;
+		String filesPath = directory + "data/";
+		String testsPath = directory + "tests/tests.dat";
+		String resultPath = directory + "tests/results.csv";
+		ArrayList<TspCase> tspFiles = readFileList(testsPath, filesPath);
 		
-		for (int i = 0; i < tspFiles.size(); i++) {
-			tspCase = tspFiles.get(i);
-			
-			if (new File(tspCase.filePath).exists()) {
-				System.out.println(" - The file will be processed: " + tspCase.name + " by " + algorithm + " algorithm - " + sdf.format(new Date()));
-				DoublePoint[] dp = fm.loadFile(tspCase.filePath);
-				double currTour = 0;
-				int elapsedTime = 0;
+		// If the file data was loaded...
+		if (tspFiles.size() > 0) {
+			TspAlgorithm tspAlgo = null;
+			TspCase tspCase = null;
+
+			for (int i = 0; i < tspFiles.size(); i++) {
+				tspCase = tspFiles.get(i);
 				
-            	if (dp != null && nTest > 0) {
-            		
-            		// Run N times the TSP algorithm and then average the results 
-        			for (int j = 0; j < nTest; j++) {
-        				
-        				// Select the TSP algorithm
-                		if (algorithm.equals("SOM"))
-                    		tspAlgo = new SOMAlgorithm();
-        				
-    	            	// Set data and start algorithm
-    	            	tspAlgo.init(dp);
-    	        		tspAlgo.start();
-    	        		
-    					try {
-    		            	// Waiting for the results
-    						tspAlgo.join();
-    						
-    						// Accumulate results
-    						currTour += tspAlgo.getTourLength() * fm.getFactorValue();
-    						elapsedTime += tspAlgo.getElapsedTime();
-    					}
-    					catch (InterruptedException e) {
-    						e.printStackTrace();
-    						System.err.println(">> Batch Process Error: " + e.getMessage());
-    					}
-        			}
-        			
-        			// Show and save the results
-					tspCase.currTour = currTour / nTest;
-					tspCase.elapsedTime = elapsedTime / nTest;
-					System.out.println("   Algorithm results: Tour length: " + tspCase.currTour + " units, Tour MAE: " + tspCase.getTourMAPE(false) + ", Elapsed time: " + tspCase.elapsedTime + " ms");
-            	}
-            	else {
-            		System.out.println("   The data was not loaded - " + sdf.format(new Date()));
-            	}
+				if (new File(tspCase.filePath).exists()) {
+					System.out.println(" - The file will be processed: " + tspCase.name + " by " + algorithm + " algorithm - " + sdf.format(new Date()));
+					DoublePoint[] dp = fm.loadFile(tspCase.filePath);
+					double currTour = 0;
+					int elapsedTime = 0;
+					
+	            	if (dp != null && nTest > 0) {
+	            		
+	            		// Run N times the TSP algorithm and then average the results 
+	        			for (int j = 0; j < nTest; j++) {
+	        				
+	        				// Select the TSP algorithm
+	                		if (algorithm.equals("SOM"))
+	                    		tspAlgo = new SOMAlgorithm();
+	        				
+	    	            	// Set data and start algorithm
+	    	            	tspAlgo.init(dp);
+	    	        		tspAlgo.start();
+	    	        		
+	    					try {
+	    		            	// Waiting for the results
+	    						tspAlgo.join();
+	    						
+	    						// Accumulate results
+	    						currTour += tspAlgo.getTourLength() * fm.getFactorValue();
+	    						elapsedTime += tspAlgo.getElapsedTime();
+	    					}
+	    					catch (InterruptedException e) {
+	    						e.printStackTrace();
+	    						System.err.println(">> Batch Process Error: " + e.getMessage());
+	    					}
+	        			}
+	        			
+	        			// Show and save the results
+						tspCase.currTour = currTour / nTest;
+						tspCase.elapsedTime = elapsedTime / nTest;
+						System.out.println("   Algorithm results: Tour length: " + tspCase.currTour + " units, Tour MAE: " + tspCase.getTourMAPE(false) + ", Elapsed time: " + tspCase.elapsedTime + " ms");
+	            	}
+	            	else {
+	            		System.out.println("   The data was not loaded - " + sdf.format(new Date()));
+	            	}
+				}
+				else {
+					System.out.println("   The file: " + tspCase.filePath + " does not exists");
+				}
 			}
-			else {
-				System.out.println("   The file: " + tspCase.filePath + " does not exists");
-			}
+			
+			// Save results
+			saveTestResultsToCSV(resultPath, tspFiles);
 		}
-		
-		// Save results
-		saveTestResultsToCSV(tspFiles);
-		
 	}
 
 	// Read the TSP file list
-	private static ArrayList<TspCase> readFileList(String filesFolder)
+	private static ArrayList<TspCase> readFileList(String testsPath, String filesPath)
 	{
 		ArrayList<TspCase> tspFiles = new ArrayList<TspCase>();
-		
-		String testPath = "test/tests.dat";
-		File f = new File(testPath);
+		File f = new File(testsPath);
 
 	    try {
 			if (f.exists()) {
@@ -144,7 +131,7 @@ public class TestEngine {
 				int nPoints;
 				double bestTour;
 				
-		    	br = new BufferedReader( new FileReader(testPath));
+		    	br = new BufferedReader( new FileReader(testsPath));
 		    	line = br.readLine();
 		    	
 		    	while (!line.startsWith("EOF")) {
@@ -152,7 +139,7 @@ public class TestEngine {
 		    		
 		    		if (tokens.length >= 2) {
 		    			fileName = tokens[0].trim();
-		    			filePath = filesFolder + fileName.toLowerCase() + ".tsp.txt";
+		    			filePath = filesPath + fileName.toLowerCase() + ".tsp.txt";
 		    			nPoints = Integer.parseInt(fileName.replaceAll("([A-Za-z])", ""));
 		    			bestTour = Double.parseDouble(tokens[1].trim());
 		    			
@@ -163,7 +150,7 @@ public class TestEngine {
 		    	br.close();
 		    }
 			else {
-				System.out.println("   The test folder: " + testPath + " does not exists");
+				System.out.println("   The tests file: " + testsPath + " does not exists");
 			}
 	    }
 	    catch(IOException e) {
@@ -174,8 +161,7 @@ public class TestEngine {
 	}
 	
 	// Save the TSP cases results into CSV file
-	private static void saveTestResultsToCSV(ArrayList<TspCase> tspFiles) {
-		String resultPath = "test/results.csv";
+	private static void saveTestResultsToCSV(String resultPath, ArrayList<TspCase> tspFiles) {
 		FileWriter writer = null;
 		StringBuilder sb = null;
 		TspCase tspCase = null;
