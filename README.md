@@ -53,6 +53,8 @@ And the time complexity of the solution is:
 
 ![time complexity](https://raw.githubusercontent.com/ansegura7/TSP/master/images/results2.PNG)
 
+Experimentally, it is calculated that the computational complexity of the solution is quadratic, which is better than the factorial time (natural behavior of the problem).
+
 ## Program Execution Rules
 The repository has an executable file in the **jar** folder. The .JAR program must be run with Java 8 or higher.
 
