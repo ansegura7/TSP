@@ -31,13 +31,13 @@ public class Environment extends javax.swing.JFrame
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jCombo1;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JScrollPane jScrollPane1; 
     public EnvCanvas envCanvas;
@@ -83,12 +83,12 @@ public class Environment extends javax.swing.JFrame
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jCombo1 = new javax.swing.JComboBox<String>();
-        jLabel1 = new javax.swing.JLabel("File name:");
-        jLabel2 = new javax.swing.JLabel("Elapsed time:");
-        jLabel3 = new javax.swing.JLabel("TSP tour length:");
+        jLabel1 = new javax.swing.JLabel("Load TSP file");
+        jLabel2 = new javax.swing.JLabel("Animation");
+        jLabel3 = new javax.swing.JLabel("File name:");
         jLabel4 = new javax.swing.JLabel("Number of points:");
-        jLabel5 = new javax.swing.JLabel("Animation:");
-        jLabel6 = new javax.swing.JLabel("Load TSP file");
+        jLabel5 = new javax.swing.JLabel("TSP tour length:");
+        jLabel6 = new javax.swing.JLabel("Elapsed time:");
         jCheckBox1 = new javax.swing.JCheckBox();
         jTextArea1 = new javax.swing.JTextArea();
         jScrollPane1 = new javax.swing.JScrollPane(jTextArea1);
@@ -163,51 +163,48 @@ public class Environment extends javax.swing.JFrame
 		// Initialize combo1
 		jPanel2.add(jCombo1);
 		jCombo1.setBounds(20, 70, 165, 20);
-		jCombo1.setFont(new java.awt.Font("Tahoma", 1, 11));
-		jCombo1.setForeground(new java.awt.Color(0, 70, 213));
+		jCombo1.setFont(new java.awt.Font("Tahoma", 0, 11));
 		jCombo1.addItem("SOM Algorithm");
 		jCombo1.setToolTipText("Select algorithm.");
         
+        // Initialize checkBox1
+        jPanel2.add(jCheckBox1);
+        jCheckBox1.setBounds(101, 128, 40, 20);
+        jCheckBox1.setBackground(Color.white);
+		
         // Initialize label1
         jPanel2.add(jLabel1);
-        jLabel1.setBounds(20, 140, 200, 20);
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11));
-        jLabel1.setForeground(new java.awt.Color(0, 70, 213));
+        jLabel1.setBounds(20, 40, 100, 20);
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12));
         
         // Initialize label2
         jPanel2.add(jLabel2);
-        jLabel2.setBounds(20, 165, 200, 20);
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11));
-        jLabel2.setForeground(new java.awt.Color(0, 70, 213));
-        
+        jLabel2.setBounds(20, 128, 100, 20);
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12));
+		
         // Initialize label3
         jPanel2.add(jLabel3);
-        jLabel3.setBounds(20, 190, 200, 20);
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel3.setBounds(20, 165, 200, 20);
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel3.setForeground(new java.awt.Color(0, 70, 213));
         
         // Initialize label4
         jPanel2.add(jLabel4);
-        jLabel4.setBounds(20, 215, 200, 20);
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel4.setBounds(20, 190, 200, 20);
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel4.setForeground(new java.awt.Color(0, 70, 213));
         
         // Initialize label5
         jPanel2.add(jLabel5);
-        jLabel5.setBounds(20, 240, 100, 20);
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel5.setBounds(20, 215, 200, 20);
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel5.setForeground(new java.awt.Color(0, 70, 213));
         
         // Initialize label6
         jPanel2.add(jLabel6);
-        jLabel6.setBounds(20, 40, 100, 20);
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel6.setBounds(20, 240, 200, 20);
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel6.setForeground(new java.awt.Color(0, 70, 213));
-        
-        // Initialize checkBox1
-        jPanel2.add(jCheckBox1);
-        jCheckBox1.setBounds(90, 240, 40, 20);
-        jCheckBox1.setBackground(Color.white);
     }              
     
     // Event - Load TSP data file
@@ -221,10 +218,10 @@ public class Environment extends javax.swing.JFrame
         	
         	envCanvas.paintGraph(doublePoint, null);
         	jButton2.setEnabled(true);
-            jLabel1.setText("File name: " + fm.getFileName());
-            jLabel2.setText("Elapsed time: ");
-            jLabel3.setText("TSP tour length: ");
-            jLabel4.setText("Number of points: ");
+            jLabel3.setText("File name: " + fm.getFileName().toUpperCase());
+            jLabel4.setText("Number of points: " + doublePoint.length);
+            jLabel5.setText("TSP tour length: ");
+            jLabel6.setText("Elapsed time: ");
             jTextArea1.setText("");
             System.out.println("   Ploted " + doublePoint.length + " points");
         }
@@ -242,12 +239,12 @@ public class Environment extends javax.swing.JFrame
     		tspAlgo = new SOMAlgorithm(this, jCheckBox1.isSelected());
     	}
         
+        // Clean GUI controls
         jButton1.setEnabled(false);
     	jButton2.setEnabled(false);
     	jButton3.setEnabled(true);
-        jLabel2.setText("Elapsed time: ");
-        jLabel3.setText("TSP tour length: ");
-        jLabel4.setText("Number of points: ");
+        jLabel5.setText("TSP tour length: ");
+        jLabel6.setText("Elapsed time: ");
         jTextArea1.setText("");
         
     	// Set data and start algorithm
@@ -278,18 +275,14 @@ public class Environment extends javax.swing.JFrame
     // Show the final results of the minimum tour
     public void displayResults()
     {
-    	long elapsedTime = tspAlgo.getElapsedTime();
     	double tourLength = tspAlgo.getTourLength() * fm.getFactorValue();
+    	long elapsedTime = tspAlgo.getElapsedTime();
     	DoubleLinkedList solution = tspAlgo.getSolution();
-    	jButton1.setEnabled(true);
-    	jButton2.setEnabled(true);
-    	jButton3.setEnabled(false);
     	
     	// Solution KPIs
-        jLabel2.setText("Elapsed time: " + elapsedTime + " ms");
-        jLabel3.setText("TSP tour length: " + df.format(tourLength) + " units");
-        jLabel4.setText("Number of points: " + doublePoint.length);
-        System.out.println("   Algorithm results: Tour length: " + tourLength + " units, Elapsed time: " + tspAlgo.getElapsedTime() + " ms");
+        jLabel5.setText("TSP tour length: " + df.format(tourLength) + " uom");
+        jLabel6.setText("Elapsed time: " + elapsedTime + " ms");
+        System.out.println("   Algorithm results: Tour length: " + tourLength + " UoM, Elapsed time: " + elapsedTime + " ms");
 
     	// Solution Tour
         StringBuilder sb = new StringBuilder();
@@ -300,5 +293,10 @@ public class Environment extends javax.swing.JFrame
         }
         while (n != solution.getLast());
         jTextArea1.setText(sb.toString());
+        
+        // Update buttons enable status
+    	jButton1.setEnabled(true);
+    	jButton2.setEnabled(true);
+    	jButton3.setEnabled(false);
     }
 }

@@ -86,7 +86,6 @@ public class FileManager
     public DoublePoint[] loadFile(String filepath)
     {
         doublePoint = null;
-        factorValue = 1.0d;
         
         // If there is no file, then select it
         if (filepath.equals("")) {
@@ -103,6 +102,7 @@ public class FileManager
 	    	// If there are a selected file...
 	    	if (!filepath.equals(""))
 	    	{
+	    		this.factorValue = 1.0d;
 		    	br = new BufferedReader( new FileReader(filepath));
 				String line = br.readLine();
 				String[] tokens = null;
