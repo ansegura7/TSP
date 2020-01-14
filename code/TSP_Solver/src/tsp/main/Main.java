@@ -8,9 +8,10 @@
 
 package tsp.main;
 
+import tsp.gui.Environment;
 import tsp.test.TestEngine;
 
-// Program Main Class of TSP Solver solution GUI
+// Program Main class of TSP Solver solution
 public class Main {
     
     /** Creates a new instance of Main */
@@ -23,18 +24,18 @@ public class Main {
      */
     public static void main(String[] args) {
     	
-    	// Class variables
+    	// Program variables
     	String mode = "GUI";
     	if (args.length > 0)
-    		mode = args[0];
+    		mode = args[0].toUpperCase();
     	
     	// Run program...
-    	if (mode.toUpperCase().startsWith("GUI")) {
+    	if (mode.startsWith("GUI")) {
     		
     		// Launch the GUI
-    		new tsp.gui.Environment().setVisible(true);
+    		new Environment().setVisible(true);
     	}
-    	else if (mode.toUpperCase().startsWith("TEST")) {
+    	else if (mode.startsWith("TESTS")) {
 			
     		// Batch engine variables
     		if (args.length > 1) {

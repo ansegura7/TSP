@@ -1,5 +1,5 @@
 /*
- * Main.java
+ * TestEngine.java
  *
  * Created on January 5, 2020, 09:22 AM
  * Created by Andres Segura
@@ -18,12 +18,12 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
-import tsp.algorithm.SOMAlgorithm;
 import tsp.algorithm.TspAlgorithm;
+import tsp.algorithm.SOMAlgorithm;
 import tsp.util.DoublePoint;
 import tsp.util.FileManager;
 
-// Program Main Class of TSP Solver solution for test and calibration purpose
+// TSP Solver class with a static method for testing and calibration purpose
 public class TestEngine {
 
 	// Class variables

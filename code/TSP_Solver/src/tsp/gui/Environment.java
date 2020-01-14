@@ -121,7 +121,7 @@ public class Environment extends javax.swing.JFrame
         
         // Initialize boton1
         jPanel2.add(jButton1);
-        jButton1.setBounds(105, 40, 75, 20);
+        jButton1.setBounds(105, 40, 80, 20);
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 11));
         jButton1.setForeground(new java.awt.Color(0, 70, 213));
         jButton1.setText("Seach");
@@ -132,7 +132,7 @@ public class Environment extends javax.swing.JFrame
             }
         });
         
-		// Initialize boton3
+		// Initialize boton2
 		jPanel2.add(jButton2);
 		jButton2.setBounds(20, 100, 75, 20);
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 11));
@@ -146,13 +146,13 @@ public class Environment extends javax.swing.JFrame
             }
         });
         
-        // Initialize boton4
+        // Initialize boton3
 		jPanel2.add(jButton3);
-		jButton3.setBounds(105, 100, 75, 20);
+		jButton3.setBounds(105, 100, 80, 20);
         jButton3.setFont(new java.awt.Font("Tahoma", 1, 11));
         jButton3.setForeground(new java.awt.Color(0, 70, 213));
-        jButton3.setText("Stop");
-        jButton3.setToolTipText("Stop execution.");
+        jButton3.setText("Pause");
+        jButton3.setToolTipText("Pause/Resume algorithm execution.");
         jButton3.setEnabled(false);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -162,7 +162,7 @@ public class Environment extends javax.swing.JFrame
         
 		// Initialize combo1
 		jPanel2.add(jCombo1);
-		jCombo1.setBounds(20, 70, 160, 20);
+		jCombo1.setBounds(20, 70, 165, 20);
 		jCombo1.setFont(new java.awt.Font("Tahoma", 1, 11));
 		jCombo1.setForeground(new java.awt.Color(0, 70, 213));
 		jCombo1.addItem("SOM Algorithm");
@@ -221,7 +221,6 @@ public class Environment extends javax.swing.JFrame
         	
         	envCanvas.paintGraph(doublePoint, null);
         	jButton2.setEnabled(true);
-        	jButton3.setEnabled(true);
             jLabel1.setText("File name: " + fm.getFileName());
             jLabel2.setText("Elapsed time: ");
             jLabel3.setText("TSP tour length: ");
@@ -234,30 +233,46 @@ public class Environment extends javax.swing.JFrame
     // Event - Method to solve the TSP
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
     	
-        if (doublePoint != null)
-        {
-        	if (jCombo1.getSelectedIndex() == 0) {
-        		tspAlgo = new SOMAlgorithm(this, jCheckBox1.isSelected());
-        	}
-        	jButton2.setEnabled(false);
-            jLabel2.setText("Elapsed time: ");
-            jLabel3.setText("TSP tour length: ");
-            jLabel4.setText("Number of points: ");
-            jTextArea1.setText("");
-            
-        	// Set data and start algorithm
-        	tspAlgo.init(doublePoint);
-    		tspAlgo.start();
-    		
-        }
+    	// Validation
+        if (doublePoint == null)
+        	return;
+    	
+        // Select algorithm
+        if (jCombo1.getSelectedIndex() == 0) {
+    		tspAlgo = new SOMAlgorithm(this, jCheckBox1.isSelected());
+    	}
+        
+        jButton1.setEnabled(false);
+    	jButton2.setEnabled(false);
+    	jButton3.setEnabled(true);
+        jLabel2.setText("Elapsed time: ");
+        jLabel3.setText("TSP tour length: ");
+        jLabel4.setText("Number of points: ");
+        jTextArea1.setText("");
+        
+    	// Set data and start algorithm
+    	tspAlgo.init(doublePoint);
+		tspAlgo.start();
     }
     
-    // Event - Stop algorithm execution
+    // Event - Pause/Resume algorithm execution
     @SuppressWarnings("deprecation")
 	private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {                                         
     	
-        if (doublePoint != null)
-        	tspAlgo.stop();
+    	// Validation
+        if (doublePoint == null)
+        	return;
+        
+        String currAction = jButton3.getText();
+        if (currAction == "Pause") {
+        	jButton3.setText("Resume");
+        	tspAlgo.suspend();
+        }
+        else if (currAction == "Resume") {
+        	jButton3.setText("Pause");
+        	tspAlgo.resume();
+        }
+        	
     }
     
     // Show the final results of the minimum tour
@@ -266,7 +281,9 @@ public class Environment extends javax.swing.JFrame
     	long elapsedTime = tspAlgo.getElapsedTime();
     	double tourLength = tspAlgo.getTourLength() * fm.getFactorValue();
     	DoubleLinkedList solution = tspAlgo.getSolution();
+    	jButton1.setEnabled(true);
     	jButton2.setEnabled(true);
+    	jButton3.setEnabled(false);
     	
     	// Solution KPIs
         jLabel2.setText("Elapsed time: " + elapsedTime + " ms");

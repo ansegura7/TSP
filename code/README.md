@@ -3,18 +3,19 @@
 ## Authors
 - Created by Andrés Segura Tinoco
 - Created on Jan 02, 2020
+- Version v0.6
 
 ## Program Description
 The program has 12 classes. Below, each of them are described:
 
 File class: **Main.java**
-- Description: Program Main Class of TSP Solver solution GUI.
+- Description: Program Main class of TSP Solver solution.
 - Package: tsp.main
 - Main methods:
     - **main**: Input function of the main class.
 
 File class: **TestEngine.java**
-- Description: Program Main Class of TSP Solver solution for test and calibration purpose.
+- Description: TSP Solver class with a static method for testing and calibration purpose.
 - Package: tsp.test
 - Main methods:
     - **runAccuracyTests**: Public function to run the accuracy tests in batch mode.
@@ -121,3 +122,5 @@ File class: **DoubleLinkedList.java**
     - **rightInsert**: Insert a node to the right of node p .
     - **leftInsert**: Insert a node to the left of node p.
     - **remove**: Delete a node from the list.
+
+---
