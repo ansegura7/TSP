@@ -3,9 +3,6 @@ Project in Java to solve the Travelling Salesman Problem (TSP). An approximation
 
 ![som-xqf131-solution](https://raw.githubusercontent.com/ansegura7/TSP/master/images/som-xqf131.gif)
 
-TSP Solver GUI
-![tsp-solver-gui](https://raw.githubusercontent.com/ansegura7/TSP/master/images/gui.PNG)
-
 ## Algorithms
 - Self-organizing maps
 
@@ -78,6 +75,9 @@ The program can be run in 2 modes: GUI or TESTS. Below, some examples of how to 
 ```
 
 The project was developed in the Eclipse IDE, and is located in the **code** folder.
+
+## TSP Solver GUI
+![tsp-solver-gui](https://raw.githubusercontent.com/ansegura7/TSP/master/images/gui.PNG)
 
 ## Contributing and Feedback
 Any kind of feedback/criticism would be greatly appreciated (algorithm design, documentation, improvement ideas, spelling mistakes, etc...).
