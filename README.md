@@ -1,7 +1,10 @@
 # TSP
 Project in Java to solve the Travelling Salesman Problem (TSP). An approximation solution with a self-organizing maps (SOM) is proposed.
 
-![som-xqf131 solution](https://raw.githubusercontent.com/ansegura7/TSP/master/images/som-xqf131.gif)
+![som-xqf131-solution](https://raw.githubusercontent.com/ansegura7/TSP/master/images/som-xqf131.gif)
+
+TSP Solver GUI
+![tsp-solver-gui](https://raw.githubusercontent.com/ansegura7/TSP/master/images/gui.PNG)
 
 ## Algorithms
 - Self-organizing maps
